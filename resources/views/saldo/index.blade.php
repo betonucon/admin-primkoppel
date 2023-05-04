@@ -1,0 +1,499 @@
+@extends('layouts.web')
+@push('ajax')
+<style>
+	th{text-transform:uppercase;}
+</style>
+<script>
+        var handleDataTableDefault = function() {
+			"use strict";
+			
+			if ($('#data-table-default').length !== 0) {
+				var table=$('#data-table-default').DataTable({
+					responsive: false,
+					processing: false,
+					ordering: false,
+					serverSide: false,
+					ajax:"{{ url('Saldopinjaman/get_data?tahun='.$tahun)}}",
+					columns: [
+						{ data: 'id', render: function (data, type, row, meta) 
+							{
+								return '<input type="checkbox" name="id[]" value="'+data+'" >';
+							} 
+						},
+						{ data: 'keterangan' },
+						{ data: 'uang_pinjaman' },
+						{ data: 'uang_margin' },
+						{ data: 'status' },
+						{ data: 'bulannya' },
+						{ data: 'tahun' },
+						{ data: 'tanggal' },
+						
+					],
+					language: {
+						paginate: {
+							// remove previous & next text from pagination
+							previous: '<< previous',
+							next: 'Next>>'
+						}
+					}
+				});
+				$('#data-table-default thead td:eq(1)').each(function () {
+					var title = $(this).text();
+					$(this).html(title+' <input type="text" class="col-search-input" style="display:block;border: solid 1px #b9a4a4; padding: 3px; width: 100%;" placeholder="CARI ' + title + '" />');
+				});
+				$('#data-table-default thead td:eq(2)').each(function () {
+					var title = $(this).text();
+					$(this).html(title+' <input type="text" class="col-search-input" style="display:block;border: solid 1px #b9a4a4; padding: 3px; width: 100%;" placeholder="CARI ' + title + '" />');
+				});
+				$('#data-table-default thead td:eq(3)').each(function () {
+					var title = $(this).text();
+					$(this).html(title+' <input type="text" class="col-search-input" style="display:block;border: solid 1px #b9a4a4; padding: 3px; width: 100%;" placeholder="CARI ' + title + '" />');
+				});
+				$('#data-table-default thead td:eq(4)').each(function () {
+					var title = $(this).text();
+					$(this).html(title+' <input type="text" class="col-search-input" style="display:block;border: solid 1px #b9a4a4; padding: 3px; width: 100%;" placeholder="CARI ' + title + '" />');
+				});
+				$('#data-table-default thead td:eq(5)').each(function () {
+					var title = $(this).text();
+					$(this).html(title+' <input type="text" class="col-search-input" style="display:block;border: solid 1px #b9a4a4; padding: 3px; width: 100%;" placeholder="CARI ' + title + '" />');
+				});
+				$('#data-table-default thead td:eq(6)').each(function () {
+					var title = $(this).text();
+					$(this).html(title+' <input type="text" class="col-search-input" style="display:block;border: solid 1px #b9a4a4; padding: 3px; width: 100%;" placeholder="CARI ' + title + '" />');
+				});
+				$('#data-table-default thead td:eq(7)').each(function () {
+					var title = $(this).text();
+					$(this).html(title+' <input type="text" class="col-search-input" style="display:block;border: solid 1px #b9a4a4; padding: 3px; width: 100%;" placeholder="CARI ' + title + '" />');
+				});
+				
+				
+				table.columns().every(function () {
+					var table = this;
+					$('input', this.header()).on('keyup change', function () {
+						if (table.search() !== this.value) {
+							table.search(this.value).draw();
+						}
+					});
+				});
+				
+				
+			}
+		};
+
+		var TableManageDefault = function () {
+			"use strict";
+			return {
+				//main function
+				init: function () {
+					handleDataTableDefault();
+				}
+			};
+		}();
+
+		$(document).ready(function() {
+			TableManageDefault.init();
+		});
+    </script>
+@endpush
+@section('contex')  
+<div class="content">
+    <ol class="breadcrumb float-xl-right">
+        <li class="breadcrumb-item"><a href="{{url('/')}}">Home</a></li>
+        <li class="breadcrumb-item active">{{$menu}}</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">{{$menu}}&nbsp;&nbsp;<small>{{name_app()}}</small></h1>
+    <div class="panel panel-success" data-sortable-id="ui-widget-11" >
+        <div class="panel-heading">
+            <h4 class="panel-title">Saldo Pinjaman</h4>
+            <div class="panel-heading-btn">
+                <!-- <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a> -->
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="panel-body">
+            @if(Auth::user()->sts_anggota==1)
+            <div class="btn-group" style="margin-bottom:2%;width:24%">
+                <button type="button" class="btn btn-blue btn-sm" onclick="tambah()"><i class="fa fa-plus"></i> Tambah data</button>
+                <select class="form-control" style="width:50%" onchange="pilih_tahun(this.value)">
+                    @for($x=2020;$x<=date('Y');$x++)
+                    <option value="{{$x}}" @if($x==$tahun) selected @endif >{{$x}}</option>
+                    @endfor
+                </select>
+            </div>
+            @else
+
+
+            @endif
+            <h3>Saldo {{$tahun}} : </h3>
+            <hr>
+            <dl class="row" style="margin-bottom: 0px;background: #f1fbd8;">
+                <dt class="text-inverse text-right col-4 text-truncate">Saldo Pinjaman</dt>
+                <dd class="col-8 text-truncate">Rp.{{uang(total_saldo_pinjaman($tahun))}}</dd>
+                <dt class="text-inverse text-right col-4 text-truncate">Bagi Hasil</dt>
+                <dd class="col-8 text-truncate">Rp.{{uang(total_bagihasil($tahun))}}</dd>
+            </dl>
+            <table id="data-table-default" class="table table-striped table-bordered table-td-valign-middle">
+                <thead>
+                    <tr>
+                        <th width="5%">No</th>
+                        <th class="text-nowrap">keterangan</th>
+                        <th width="13%" class="text-nowrap">Nominal</th>
+                        <th width="13%" class="text-nowrap">Margin</th>
+                        <th width="7%"class="text-nowrap">Status</th>
+                        <th width="9%" class="text-nowrap">Bulan</th>
+                        <th width="7%" class="text-nowrap">Tahun</th>
+                        <th width="9%" class="text-nowrap">Tanggal</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+        
+    </div>
+
+    <div class="row">
+        <div class="modal" id="modal-tambah" aria-hidden="true" style="display: none;background: #1717198a;">
+			<div class="modal-dialog modal-lg" style="margin-top:0px">
+				<div class="modal-content">
+                    <div class="modal-header">
+						<h4 class="modal-title">Tambah Simpanan Wajib</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+                        <div class="alert alert-yellow fade show m-b-10" style="padding: 1%;text-align: center;">
+                            <span class="close" data-dismiss="alert">×</span>
+                            <strong>Notifikasi!</strong><br>Tambah data simpanan wajib anggota.
+                            <div id="tampil-notifikasi-transaksi"></div>
+                        </div>
+                        
+                        <div class="btn-group" style="margin-bottom:2%">
+                            
+                        </div>
+                        <form id="mytransaksi" action="{{url('Simpananwajib')}}" method="post" enctype="multipart/form-data">
+                              
+                            <div class="col-xl-10 offset-xl-2">
+                                <div class="form-group row m-b-10">
+                                    <label class="col-lg-3 text-lg-right col-form-label">Keterangan</label>
+                                    <div class="col-lg-9 col-xl-9">
+                                        <input type="text"  name="name" value="Saldo pinjaman" placeholder="Ketik disini...." class="form-control">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row m-b-10">
+                                    <label class="col-lg-3 text-lg-right col-form-label">Nilai</label>
+                                    <div class="col-lg-9 col-xl-4">
+                                        <input type="text" name="nominal" onkeyup="ubah_rupiah(this.value)" onkeypress="return hanyaAngka(event)" placeholder="Ketik disini...." class="form-control">
+                                    </div>
+                                    <div class="col-lg-9 col-xl-4">
+                                        <input type="text" disabled id="rupiah_nominal" placeholder="Ketik disini...." class="form-control">
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="form-group row m-b-10">
+                                    <label class="col-lg-3 text-lg-right col-form-label">Periode Bulan & Tahun</label>
+                                    <div class="col-lg-9 col-xl-3">
+                                        
+                                        <select class="form-control" name="bulan">
+                                            <option value="">-- Pilih --</option>
+                                            @for($bul=1;$bul<13;$bul++)
+                                                <option value="{{ubah_bulan($bul)}}">- {{bulan(ubah_bulan($bul))}}</option>
+                                            @endfor
+                                        </select>
+                                            
+                                    </div>
+                                    <div class="col-lg-9 col-xl-3">
+                                        
+                                        <select class="form-control" name="tahun">
+                                            <option value="">-- Pilih --</option>
+                                            @for($thn=2020;$thn<=date('Y');$thn++)
+                                                <option value="{{$thn}}">- {{$thn}}</option>
+                                            @endfor
+                                        </select>
+                                            
+                                    </div>
+                                </div>
+
+                                
+                                <!-- end form-group row -->
+                            </div>
+							
+                        </form>
+					</div>
+					<div class="modal-footer">
+                        <a href="javascript:;" class="btn btn-primary" onclick="simpan()" >Simpan</a>
+                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal">Tutup</a>
+                    </div>
+				</div>
+			</div>
+		</div>
+        <div class="modal" id="modal-tampil_import" aria-hidden="true" style="display: none;background: #1717198a;">
+			<div class="modal-dialog modal-lg" style="margin-top:0px">
+				<div class="modal-content">
+                    <div class="modal-header">
+						<h4 class="modal-title">Import data simpanan wajib</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+                        <div class="alert alert-yellow fade show m-b-10" style="padding: 1%;text-align: center;">
+                            <span class="close" data-dismiss="alert">×</span>
+                            <strong>Notifikasi!</strong><br>Upload file excel dengan format seperti ini.
+                            <div id="tampil-notifikasi-proses-tagihan"></div>
+                        </div>
+                        <form id="myimport" action="{{url('Simpananwajib/import')}}" method="post" enctype="multipart/form-data">
+                            <div class="form-group row m-b-10">
+                                <label class="col-lg-3 text-lg-right col-form-label">File Simpanan Wajib (excel)</label>
+                                <div class="col-lg-9 col-xl-6">
+                                    <input type="file" name="file" placeholder="Ketik disini...." class="form-control">
+                                </div>
+                            </div>
+					        <input type="submit">
+                        </form>
+					</div>
+					<div class="modal-footer">
+                        <a href="javascript:;" class="btn btn-blue" onclick="proses_import_data()">Proses Import</a>
+                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal">Tutup</a>
+                    </div>
+				</div>
+			</div>
+		</div>
+        <div class="modal" id="modal-view_tagihan" aria-hidden="true" style="display: none;background: #1717198a;">
+			<div class="modal-dialog modal-lg" style="margin-top:0px">
+				<div class="modal-content">
+                    <div class="modal-header">
+						<h4 class="modal-title">Rincian Pinjaman</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+                        <div  id="view_tagihan" style="max-height: 450px;overflow-x: hidden;overflow-y: scroll;padding: 1%;" ></div>
+                        
+					</div>
+					<div class="modal-footer">
+                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal">Tutup</a>
+                    </div>
+				</div>
+			</div>
+		</div>
+        <div class="modal fade" id="modal-notifikasi" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Notifikasi</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger m-b-0">
+                            <h5><i class="fa fa-info-circle"></i> Erorr</h5>
+                            <div id="isi-notifikasi"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="javascript:;" class="btn btn-white" data-dismiss="modal">Tutup</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('ajax')
+    <script>
+        var handleDataTableFixedHeader = function() {
+            "use strict";
+            
+            if ($('#datafixedheader').length !== 0) {
+                $('#datafixedheader').DataTable({
+                    lengthMenu: [20, 40, 60],
+                    fixedHeader: {
+                        header: true,
+                        headerOffset: $('#header').height()
+                    },
+                    responsive: false,
+                    langth: false,
+                    paging: true,
+                    order: false,
+                    info: false,
+                });
+            }
+        };
+
+        var TableManageFixedHeader = function () {
+            "use strict";
+            return {
+                //main function
+                init: function () {
+                    handleDataTableFixedHeader();
+                }
+            };
+        }();
+
+        $(document).ready(function() {
+            TableManageFixedHeader.init();
+            $('#datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                
+            });
+        });
+
+        function tambah(){
+            $('#modal-tambah').modal('show');
+        }
+        function pilih_tahun(tahun){
+            location.assign("{{url('Saldopinjaman')}}?tahun="+tahun)
+        }
+        function cari_anggota(a){
+            
+			$.ajax({
+				type: 'GET',
+				url: "{{url('Anggota/cari_anggota')}}",
+				data: "nik="+a,
+				success: function(msg){
+                    var data=msg.split('@');
+					$('#nik').val(data[0]);
+					$('#name').val(data[1]);
+				}
+			});
+			
+		}
+        function ubah_rupiah(nominal){
+            
+			$.ajax({
+				type: 'GET',
+				url: "{{url('ubah_rupiah')}}",
+				data: "nominal="+nominal,
+				success: function(msg){
+					$('#rupiah_nominal').val(msg);
+				}
+			});
+			
+		}
+        function tampil_tagihan(){
+            
+			$.ajax({
+				type: 'GET',
+				url: "{{url('TransaksiPinjaman/tampil_tagihan')}}",
+				data: "id=1",
+				success: function(msg){
+					$('#modal-tampil_tagihan').modal('show');
+					$('#tampil_tagihan').html(msg);
+				}
+			});
+			
+		}
+
+        function view_tagihan(nik){
+            
+			$.ajax({
+				type: 'GET',
+				url: "{{url('Simpananwajib/view_tagihan')}}",
+				data: "nik="+nik,
+				success: function(msg){
+					$('#modal-view_tagihan').modal('show');
+					$('#view_tagihan').html(msg);
+				}
+			});
+			
+		}
+
+        function proses_tagihan(){
+            
+            var form=document.getElementById('myproses_tagihan');
+            var token= "{{csrf_token()}}";
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/TransaksiPinjaman/proses_tagihan')}}?_token="+token,
+                    data: new FormData(form),
+                    contentType: false,
+                    cache: false,
+                    processData:false,
+                    success: function(msg){
+                        if(msg=='ok'){
+                            location.reload();
+                               
+                        }else{
+                            $('#tampil-notifikasi-proses-tagihan').html(msg);
+                        }
+                        
+                        
+                    }
+                });
+
+        } 
+
+        function simpan(){
+            
+            var form=document.getElementById('mytransaksi');
+            var token= "{{csrf_token()}}";
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/Simpanansaldo')}}?_token="+token,
+                    data: new FormData(form),
+                    contentType: false,
+                    cache: false,
+                    processData:false,
+                    beforeSend: function() {
+						document.getElementById("loadnya").style.width = "100%";
+					},
+                    success: function(msg){
+                        if(msg=='ok'){
+                            location.reload();
+                               
+                        }else{
+                            document.getElementById("loadnya").style.width = "0px";
+                            $('#modal-notifikasi').modal('show');
+                            $('#isi-notifikasi').html(msg);
+                        }
+                        
+                        
+                    }
+                });
+
+        } 
+
+        function proses_import_data(){
+            
+            var form=document.getElementById('myimport');
+            var token= "{{csrf_token()}}";
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/Simpananwajib/import')}}?_token="+token,
+                    data: new FormData(form),
+                    contentType: false,
+                    cache: false,
+                    processData:false,
+                    beforeSend: function() {
+						document.getElementById("loadnya").style.width = "100%";
+					},
+                    success: function(msg){
+                        if(msg=='ok'){
+                            location.reload();
+                               
+                        }else{
+                            document.getElementById("loadnya").style.width = "0px";
+                            $('#modal-notifikasi').modal('show');
+                            $('#isi-notifikasi').html(msg);
+                        }
+                        
+                        
+                    }
+                });
+
+        } 
+    </script>
+
+@endpush
