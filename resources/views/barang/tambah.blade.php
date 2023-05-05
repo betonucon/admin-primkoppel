@@ -29,6 +29,14 @@
 	</div>
 </div>
 <div class="form-group row">
+	<label class="col-lg-3 col-form-label text-right">Deskripsi Barang</label>
+	<div class="col-lg-9">
+		<div class="input-group input-group-sm">
+			<textarea class="form-control" name="deskripsi" value="" placeholder="Ketik disini...." rows="6">{{$data->deskripsi}}</textarea>
+		</div>
+	</div>
+</div>
+<div class="form-group row">
 	<label class="col-lg-3 col-form-label text-right">Harga Modal & Jual</label>
 	<div class="col-lg-3">
 		<div class="input-group input-group-sm">
@@ -44,18 +52,29 @@
 	</div>
 </div>
 <div class="form-group row">
-	<label class="col-lg-3 col-form-label text-right">Satuan</label>
+	<label class="col-lg-3 col-form-label text-right">Satuan & Kategori</label>
 	<div class="col-lg-3">
 		<div class="input-group input-group-sm">
 			<select class="form-control form-control-sm"  name="satuan">
-				<option value="">Pilih---</option>
+				<option value="">Pilih Satuan---</option>
 				@foreach(get_satuan() as $no=>$sat)
 					<option value="{{$sat->satuan}}" @if($sat->satuan==$data->satuan) selected @endif >{{$no+1}}.{{$sat->satuan}}</option>
 				@endforeach
 			</select>
 		</div>
 	</div>
+	<div class="col-lg-3">
+		<div class="input-group input-group-sm">
+			<select class="form-control form-control-sm"  name="kategori_barang_id">
+				<option value="">Pilih Kategori---</option>
+				@foreach(get_kategori_barang() as $no=>$sat)
+					<option value="{{$sat->id}}" @if($sat->id==$data->kategori_barang_id) selected @endif >{{$no+1}}.{{$sat->kategori_barang}}</option>
+				@endforeach
+			</select>
+		</div>
+	</div>
 </div>
+
 <div class="form-group row">
 	<label class="col-lg-3 col-form-label text-right">Icon Gambar</label>
 	<div class="col-lg-4">

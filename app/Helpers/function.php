@@ -257,6 +257,10 @@ function get_satuan(){
    $data=App\Satuan::orderBy('satuan','Desc')->get();
    return $data;
 }
+function get_kategori_barang(){
+   $data=App\Kategoribarang::orderBy('id','Desc')->get();
+   return $data;
+}
 function get_perusahaan(){
    $data=App\VPerusahaan::orderBy('perusahaan','Desc')->get();
    return $data;

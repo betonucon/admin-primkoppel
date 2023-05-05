@@ -141,6 +141,8 @@ class BarangController extends Controller
         
         $rules['satuan']= 'required';
         $messages['satuan.required']= 'Silahkan pilih satuan';
+        $rules['kategori_barang_id']= 'required';
+        $messages['kategori_barang_id.required']= 'Silahkan pilih kategori';
         if($request->id==0){
             $rules['file']= 'required|mimes:jpeg,jpg,png';
             $messages['file.required']= 'Silahkan upload icon gambar';
@@ -182,7 +184,9 @@ class BarangController extends Controller
                         'kode_barang'=>$kode_barang,
                         'kode_qr'=>$kode_qr,
                         'nama_barang'=>$request->nama_barang,
+                        'kategori_barang_id'=>$request->kategori_barang_id,
                         'satuan'=>$request->satuan,
+                        'deskripsi'=>$request->deskripsi,
                         'harga_modal'=>ubah_uang($request->harga_modal),
                         'harga_jual'=>ubah_uang($request->harga_jual),
                         'file'=>$filePath,
@@ -201,6 +205,8 @@ class BarangController extends Controller
                 ],[
                     'nama_barang'=>$request->nama_barang,
                     'satuan'=>$request->satuan,
+                    'kategori_barang_id'=>$request->kategori_barang_id,
+                    'deskripsi'=>$request->deskripsi,
                     'harga_modal'=>ubah_uang($request->harga_modal),
                     'harga_jual'=>ubah_uang($request->harga_jual),
                     'updated_at'=>date('Y-m-d H:i:s'),
