@@ -128,6 +128,38 @@ class OrderController extends BaseController
             return $this->sendResponseerror($e->getMessage());
         } 
     }
+    public function checkall_keranjang(Request $request)
+    {
+        $auth = Auth::user(); 
+        $user = VUser::where('username',$auth->username)->first(); 
+        
+        try{
+           
+                
+            $mst = Stok::where('no_register',$auth->username)->where('status',0)->update(['check'=>1]); 
+            
+            return $this->sendResponse(true, 'success');
+                
+        } catch(\Exception $e){
+            return $this->sendResponseerror($e->getMessage());
+        } 
+    }
+    public function uncheckall_keranjang(Request $request)
+    {
+        $auth = Auth::user(); 
+        $user = VUser::where('username',$auth->username)->first(); 
+        
+        try{
+           
+                
+            $mst = Stok::where('no_register',$auth->username)->where('status',0)->update(['check'=>0]); 
+            
+            return $this->sendResponse(true, 'success');
+                
+        } catch(\Exception $e){
+            return $this->sendResponseerror($e->getMessage());
+        } 
+    }
     public function uncheck_keranjang(Request $request)
     {
         $auth = Auth::user(); 
