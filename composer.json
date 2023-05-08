@@ -15,6 +15,7 @@
         "laravel/ui": "^3.4",
         "yajra/laravel-datatables": "^1.5",
         "milon/barcode": "^8.0",
+        "laravel/sanctum": "^2.11",
         "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {

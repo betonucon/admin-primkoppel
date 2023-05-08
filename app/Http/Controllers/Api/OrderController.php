@@ -74,7 +74,6 @@ class OrderController extends BaseController
             $messages = [];
                 $rules['kode_barang'] = 'required';
                 $rules['qty'] = 'required|numeric';
-                $rules['status'] = 'required|numeric';
 
                 
                 $validator = Validator::make($request->all(), $rules,$messages);
