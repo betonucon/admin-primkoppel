@@ -26,6 +26,7 @@ class OrderController extends BaseController
     {
         $auth = Auth::user(); 
         $user = VUser::where('username',$auth->username)->first(); 
+        $total=VStok::where('no_register',$auth->username)->where('status',0)->sum('total');
         $data=VStok::where('no_register',$auth->username)->where('status',0)->get();
         $success=[];
         $show=[];
@@ -42,7 +43,8 @@ class OrderController extends BaseController
             $detail['foto']=url_plug().'/_icon/'.$o->file;
             $show[]=$detail;
         }
-        $success=$show;
+        $success['total_bayar']=$total;
+        $success['item']=$show;
         return $this->sendResponse($success, 'success');
     }
     public function store_keranjang(Request $request)
