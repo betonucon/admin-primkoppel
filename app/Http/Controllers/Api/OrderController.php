@@ -203,8 +203,14 @@ class OrderController extends BaseController
                     $messages['akses_bayar_id.required'] = 'Pilih Metode Pembayaran';
                     if($request->akses_bayar_id==1 && $request->lokasi!=""){
                         if(saldo_sukarela($auth->username)>=$total){
-                            $rules['pin'] = 'required|numeric';
+                            $rules['pin'] = 'required|numeric|min:6|max:6';
                             $messages['pin.required'] = 'Masukan PIN'.saldo_sukarela($auth->username);
+                            $messages['pin.min'] = 'PIN 6 Angka';
+                            $messages['pin.max'] = 'PIN 6 Angka';
+                            if($request->pin!=$auth->pin){
+                                $rules['orderes'] = 'required';
+                                $messages['orderes.required'] = 'PIN yang anda masukan salah';
+                            }
                         }else{
                             $rules['orderes'] = 'required';
                             $messages['orderes.required'] = 'Saldo tidak mencukupi';
@@ -233,22 +239,30 @@ class OrderController extends BaseController
                     return $this->sendResponseerror($error);
                 }else{
                     if($request->akses_bayar_id==1){
-
+                        $status_bayar=1;
                     }
                     if($request->akses_bayar_id==2){
-
+                        $status_bayar=0;
                     }
                     if($request->akses_bayar_id==3){
-
+                        $status_bayar=0;
                     }
-                    $save=Stok::UpdateOrcreate([
+                    $no_transaksi=no_order();
+                    $save=Orderstok::UpdateOrcreate([
                         'no_register'=>$auth->username,
-                        'kode_barang'=>$request->kode_barang,
-                        'status'=>0,
+                        'distributor'=>$auth->name,
+                        'no_order'=>$no_transaksi,
                     ],[
-                        'qty'=>$request->qty,
-                        
+                        'akses_bayar_id'=>$request->akses_bayar_id,
+                        'akses_order'=>2,
+                        'status_bayar_id'=>$status_bayar,
+                        'tgl_order'=>date('Y-m-d'),
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'status'=>1,
+                        'bulan'=>date('m'),
+                        'tahun'=>date('Y'),
                     ]);
+                    $totalcheck=VStok::where('check',1)->where('no_register',$auth->username)->where('status',0)->update(['no_transaksi'=>$no_transaksi,'status'=>1]);
 
                 }
         } catch(\Exception $e){
