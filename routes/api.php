@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group( function () {
         
     });
     Route::group(['prefix' => 'order'],function(){
+        Route::get('/keranjang', [OrderController::class, 'keranjang']);
         Route::post('/store', [OrderController::class, 'store']);
         Route::post('/store_keranjang', [OrderController::class, 'store_keranjang']);
     });
