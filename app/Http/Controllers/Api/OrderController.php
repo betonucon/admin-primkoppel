@@ -10,6 +10,7 @@ use App\Cicilan;
 use App\Barang;
 use App\VUser;
 use App\VBarang;
+use App\Orderstok;
 use App\Stok;
 use App\VStok;
 use App\Tujuan;
