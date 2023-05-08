@@ -78,6 +78,7 @@ class OrderController extends BaseController
                         'no_register'=>$auth->username,
                         'kode_barang'=>$request->kode_barang,
                         'status'=>0,
+                        'check'=>0,
                     ],[
                         'qty'=>$request->qty,
                         'harga_modal'=>$mst->harga_modal,
@@ -119,7 +120,7 @@ class OrderController extends BaseController
         try{
            
                 
-            $mst = Stok::where('id',$request->id)->update('check',1)->update(); 
+            $mst = Stok::where('id',$request->id)->update(['check'=>1]); 
             
             return $this->sendResponse(true, 'success');
                 
@@ -135,7 +136,7 @@ class OrderController extends BaseController
         try{
            
                 
-            $mst = Stok::where('id',$request->id)->update('check',0)->update(); 
+            $mst = Stok::where('id',$request->id)->update(['check'=>0]);  
             
             return $this->sendResponse(true, 'success');
                 
