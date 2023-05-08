@@ -104,7 +104,7 @@ class OrderController extends BaseController
         try{
            
                 
-            $mst = Stok::where('id',$request->id)->delete(); 
+            $mst = Stok::where('no_register',$auth->username)->where('status',0)->where('check',1)->delete(); 
             
             return $this->sendResponse(true, 'success');
                 
