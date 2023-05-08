@@ -26,6 +26,7 @@ class OrderController extends BaseController
     {
         $auth = Auth::user(); 
         $user = VUser::where('username',$auth->username)->first(); 
+        $totalcheck=VStok::where('check',1)->where('no_register',$auth->username)->where('status',0)->sum('total');
         $total=VStok::where('no_register',$auth->username)->where('status',0)->sum('total');
         $data=VStok::where('no_register',$auth->username)->where('status',0)->get();
         $success=[];
@@ -44,6 +45,7 @@ class OrderController extends BaseController
             $detail['foto']=url_plug().'/_icon/'.$o->file;
             $show[]=$detail;
         }
+        $success['total_check']=$totalcheck;
         $success['total_bayar']=$total;
         $success['item']=$show;
         return $this->sendResponse($success, 'success');
