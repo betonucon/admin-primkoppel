@@ -39,14 +39,14 @@ class OrderController extends BaseController
             $detail['satuan']=$o->satuan;
             $detail['qty']=$o->qty;
             $detail['check']=$o->check;
-            $detail['harga_jual']=$o->harga_jual;
-            $detail['total']=$o->total;
+            $detail['harga_jual']=(int) $o->harga_jual;
+            $detail['total']=(int) $o->total;
             $detail['kategori_barang']=$o->kategori_barang;
             $detail['foto']=url_plug().'/_icon/'.$o->file;
             $show[]=$detail;
         }
-        $success['total_check']=$totalcheck;
-        $success['total_bayar']=$total;
+        $success['total_check']=(int) $totalcheck;
+        $success['total_bayar']=(int) $total;
         $success['item']=$show;
         return $this->sendResponse($success, 'success');
     }
@@ -149,7 +149,7 @@ class OrderController extends BaseController
     {
         $auth = Auth::user(); 
         $user = VUser::where('username',$auth->username)->first(); 
-        $count=count((array) $request->stok_id);
+        $count=Stok::where('no_register',$auth->username)->where('status',0)->where('check',1)->count();
         try{
             $rules = [];
             $messages = [];
