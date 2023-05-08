@@ -37,6 +37,7 @@ class OrderController extends BaseController
             $detail['nama_barang']=$o->nama_barang;
             $detail['satuan']=$o->satuan;
             $detail['qty']=$o->qty;
+            $detail['check']=$o->check;
             $detail['harga_jual']=$o->harga_jual;
             $detail['total']=$o->total;
             $detail['kategori_barang']=$o->kategori_barang;
@@ -101,6 +102,38 @@ class OrderController extends BaseController
            
                 
             $mst = Stok::where('id',$request->id)->delete(); 
+            
+            return $this->sendResponse(true, 'success');
+                
+        } catch(\Exception $e){
+            return $this->sendResponseerror($e->getMessage());
+        } 
+    }
+    public function check_keranjang(Request $request)
+    {
+        $auth = Auth::user(); 
+        $user = VUser::where('username',$auth->username)->first(); 
+        
+        try{
+           
+                
+            $mst = Stok::where('id',$request->id)->update('check',1)->update(); 
+            
+            return $this->sendResponse(true, 'success');
+                
+        } catch(\Exception $e){
+            return $this->sendResponseerror($e->getMessage());
+        } 
+    }
+    public function uncheck_keranjang(Request $request)
+    {
+        $auth = Auth::user(); 
+        $user = VUser::where('username',$auth->username)->first(); 
+        
+        try{
+           
+                
+            $mst = Stok::where('id',$request->id)->update('check',0)->update(); 
             
             return $this->sendResponse(true, 'success');
                 
