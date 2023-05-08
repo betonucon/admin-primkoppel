@@ -95,9 +95,9 @@ class OrderController extends BaseController
                         return $this->sendResponse(true, 'success');
                     }else{
                         if($mst->stok>0){
-                            return $this->sendResponse(1, 'error');
+                            return $this->sendResponse(1, 'Stok tidak mencukupi');
                         }else{
-                            return $this->sendResponse(0, 'error');
+                            return $this->sendResponse(0, 'Stok kosong');
                         }
                     }
                     
