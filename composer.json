@@ -16,7 +16,6 @@
         "laravel/ui": "^3.4",
         "milon/barcode": "^8.0",
         "tymon/jwt-auth": "dev-develop",
-        "maatwebsite/excel": "^3.1",
         "yajra/laravel-datatables": "^1.5"
     },
     "require-dev": {
@@ -61,9 +60,6 @@
     },
     "config": {
         "optimize-autoloader": true,
-        "platform": {
-            "php": "7.4.19"
-         },
         "preferred-install": "dist",
         "sort-packages": true
     },
