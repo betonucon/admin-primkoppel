@@ -9,6 +9,7 @@ use App\User;
 use App\Cicilan;
 use App\Barang;
 use App\VUser;
+use App\VBarang;
 use App\Stok;
 use App\VStok;
 use App\Tujuan;
@@ -73,24 +74,33 @@ class OrderController extends BaseController
                     }
                     return $this->sendResponseerror($error);
                 }else{
-                    $mst = Barang::where('kode_barang',$request->kode_barang)->first(); 
-                    $save=Stok::UpdateOrcreate([
-                        'no_register'=>$auth->username,
-                        'kode_barang'=>$request->kode_barang,
-                        'status'=>0,
-                        'check'=>0,
-                    ],[
-                        'qty'=>$request->qty,
-                        'harga_modal'=>$mst->harga_modal,
-                        'harga_jual'=>$mst->harga_jual,
-                        'total_modal'=>($request->qty*$mst->harga_modal),
-                        'total_jual'=>($request->qty*$mst->harga_jual),
-                        'total'=>($request->qty*$mst->harga_jual),
-                        'profit'=>(($request->qty*$mst->harga_jual)-($request->qty*$mst->harga_modal)),
-                        'created_at'=>date('Y-m-d H:i:s'),
-                        
-                    ]);
-                    return $this->sendResponse(true, 'success');
+                    $mst = VBarang::where('kode_barang',$request->kode_barang)->first(); 
+                    if($mst->stok>=$request->qty){
+                        $save=Stok::UpdateOrcreate([
+                            'no_register'=>$auth->username,
+                            'kode_barang'=>$request->kode_barang,
+                            'status'=>0,
+                            'check'=>0,
+                        ],[
+                            'qty'=>$request->qty,
+                            'harga_modal'=>$mst->harga_modal,
+                            'harga_jual'=>$mst->harga_jual,
+                            'total_modal'=>($request->qty*$mst->harga_modal),
+                            'total_jual'=>($request->qty*$mst->harga_jual),
+                            'total'=>($request->qty*$mst->harga_jual),
+                            'profit'=>(($request->qty*$mst->harga_jual)-($request->qty*$mst->harga_modal)),
+                            'created_at'=>date('Y-m-d H:i:s'),
+                            
+                        ]);
+                        return $this->sendResponse(true, 'success');
+                    }else{
+                        if($mst->stok>0){
+                            return $this->sendResponse(1, 'error');
+                        }else{
+                            return $this->sendResponse(0, 'error');
+                        }
+                    }
+                    
                 }
         } catch(\Exception $e){
             return $this->sendResponseerror($e->getMessage());
