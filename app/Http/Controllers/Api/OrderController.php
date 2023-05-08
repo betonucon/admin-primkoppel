@@ -92,6 +92,22 @@ class OrderController extends BaseController
             return $this->sendResponseerror($e->getMessage());
         } 
     }
+    public function delete_keranjang(Request $request)
+    {
+        $auth = Auth::user(); 
+        $user = VUser::where('username',$auth->username)->first(); 
+        
+        try{
+           
+                
+            $mst = Stok::where('id',$request->id)->delete(); 
+            
+            return $this->sendResponse(true, 'success');
+                
+        } catch(\Exception $e){
+            return $this->sendResponseerror($e->getMessage());
+        } 
+    }
 
     public function store(Request $request)
     {
