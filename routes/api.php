@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group( function () {
 Route::middleware('auth:sanctum')->group( function () {
     Route::group(['prefix' => 'master'],function(){
         Route::get('nilai', [MasterController::class, 'nilai']);
+        Route::get('akses_bayar', [MasterController::class, 'akses_bayar']);
         Route::get('tujuan', [MasterController::class, 'tujuan']);
     });
     Route::group(['prefix' => 'pinjaman'],function(){

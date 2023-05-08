@@ -31,6 +31,7 @@ class OrderController extends BaseController
         $show=[];
         foreach($data as $o){
             $detail=[];
+            $detail['id']=$o->id;
             $detail['kode_barang']=$o->kode_barang;
             $detail['nama_barang']=$o->nama_barang;
             $detail['satuan']=$o->satuan;
@@ -94,12 +95,34 @@ class OrderController extends BaseController
     {
         $auth = Auth::user(); 
         $user = VUser::where('username',$auth->username)->first(); 
-        
+        $count=count((array) $request->stok_id);
         try{
             $rules = [];
             $messages = [];
-                $rules['kode_barang'] = 'required';
-                $rules['qty'] = 'required|numeric';
+                if($count>0){
+                    $total=VStok::whereIn('id',$request->stok_id)->sum('total');
+                    $rules['lokasi'] = 'required';
+                    $messages['lokasi.required'] = 'Masukan lokasi pengiriman';
+                    $rules['akses_bayar_id'] = 'required';
+                    $messages['akses_bayar_id.required'] = 'Pilih Metode Pembayaran';
+                    if($request->akses_bayar_id==1 && $request->lokasi!=""){
+                        if(saldo_sukarela($auth->username)>=$total){
+                            $rules['pin'] = 'required|numeric';
+                            $messages['pin.required'] = 'Masukan PIN'.saldo_sukarela($auth->username);
+                        }else{
+                            $rules['orderes'] = 'required';
+                            $messages['orderes.required'] = 'Saldo tidak mencukupi';
+                        }
+                    }
+                    
+                    
+
+                    
+                }else{
+                    $rules['orderes'] = 'required';
+                    $messages['orderes.required'] = 'Pilih Barang Yang akan dicheckout';
+                }
+                
 
                 
                 $validator = Validator::make($request->all(), $rules,$messages);
@@ -113,6 +136,15 @@ class OrderController extends BaseController
                     }
                     return $this->sendResponseerror($error);
                 }else{
+                    if($request->akses_bayar_id==1){
+
+                    }
+                    if($request->akses_bayar_id==2){
+
+                    }
+                    if($request->akses_bayar_id==3){
+
+                    }
                     $save=Stok::UpdateOrcreate([
                         'no_register'=>$auth->username,
                         'kode_barang'=>$request->kode_barang,

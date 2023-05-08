@@ -334,6 +334,14 @@ function saldo_sukarela_all(){
    
    return $data;
 }
+function saldo_sukarela($no_register){
+   
+   $masuk=App\Simpanansukarela::where('sts',1)->where('no_register',$no_register)->sum('nominal');
+   $keluar=App\Simpanansukarela::where('sts',2)->where('no_register',$no_register)->sum('nominal');
+   $data=$masuk-$keluar;
+   
+   return $data;
+}
 function total_simpananwajib(){
    $data=App\Simpananwajib::sum('nominal');
    
