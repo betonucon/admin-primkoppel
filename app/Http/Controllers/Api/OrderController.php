@@ -205,7 +205,6 @@ class OrderController extends BaseController
                         if(saldo_sukarela($auth->username)>=$total){
                             $rules['pin'] = 'required|numeric|min:5|max:6';
                             $messages['pin.required'] = 'Masukan PIN'.saldo_sukarela($auth->username);
-                            $messages['pin.min'] = 'PIN 6 Angka';
                             $messages['pin.max'] = 'PIN 6 Angka';
                             if($request->pin!=$auth->pin){
                                 $rules['orderes'] = 'required';
