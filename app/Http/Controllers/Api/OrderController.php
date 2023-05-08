@@ -203,9 +203,8 @@ class OrderController extends BaseController
                     $messages['akses_bayar_id.required'] = 'Pilih Metode Pembayaran';
                     if($request->akses_bayar_id==1 && $request->lokasi!=""){
                         if(saldo_sukarela($auth->username)>=$total){
-                            $rules['pin'] = 'required|numeric|max:6';
+                            $rules['pin'] = 'required|numeric';
                             $messages['pin.required'] = 'Masukan PIN';
-                            $messages['pin.max'] = 'PIN 6 Angka';
                             if($request->pin!=$auth->pin){
                                 $rules['orderes'] = 'required';
                                 $messages['orderes.required'] = 'PIN yang anda masukan salah';
