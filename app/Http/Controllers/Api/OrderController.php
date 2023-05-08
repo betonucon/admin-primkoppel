@@ -262,7 +262,7 @@ class OrderController extends BaseController
                         'tahun'=>date('Y'),
                     ]);
                     $totalcheck=VStok::where('check',1)->where('no_register',$auth->username)->where('status',0)->update(['no_transaksi'=>$no_transaksi,'status'=>1]);
-
+                    return $this->sendResponse(true, 'success');
                 }
         } catch(\Exception $e){
             return $this->sendResponseerror($e->getMessage());
