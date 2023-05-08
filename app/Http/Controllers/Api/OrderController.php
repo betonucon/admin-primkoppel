@@ -196,7 +196,7 @@ class OrderController extends BaseController
             $rules = [];
             $messages = [];
                 if($count>0){
-                    $total=VStok::whereIn('id',$request->stok_id)->sum('total');
+                    $total=VStok::where('no_register',$auth->username)->where('status',0)->where('check',1)->sum('total');
                     $rules['lokasi'] = 'required';
                     $messages['lokasi.required'] = 'Masukan lokasi pengiriman';
                     $rules['akses_bayar_id'] = 'required';
