@@ -183,6 +183,16 @@ class AuthController extends BaseController
         $success=[];
         return $this->sendResponse($success, 'success');
     }
+    public function saldo(Request $request)
+    {
+        $auth = Auth::user(); 
+        $user = VUser::where('username',$auth->username)->first(); 
+        $success=[];
+        $success['saldo_wajib'] =  $user->saldo_wajib;
+        $success['saldo_sukarela'] =  $user->saldo_sukarela;
+        $success['pinjaman_aktif'] =  $pinjamanaktif;
+        return $this->sendResponse($success, 'success');
+    }
 
     public function logout(Request $request)
     {
