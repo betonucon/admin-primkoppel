@@ -11,6 +11,7 @@ use App\Barang;
 use App\VUser;
 use App\VBarang;
 use App\Orderstok;
+use App\Simpanansukarela;
 use App\Stok;
 use App\Kasir;
 use App\VKasir;
@@ -231,6 +232,7 @@ class OrderController extends BaseController
             $messages = [];
                 if($count>0){
                     $total=VStok::where('no_register',$auth->username)->where('status',0)->where('check',1)->sum('total');
+                    $profit=VStok::where('no_register',$auth->username)->where('status',0)->where('check',1)->sum('profit');
                     $rules['lokasi'] = 'required';
                     $messages['lokasi.required'] = 'Masukan lokasi pengiriman';
                     $rules['akses_bayar_id'] = 'required';
@@ -295,6 +297,61 @@ class OrderController extends BaseController
                         'bulan'=>date('m'),
                         'tahun'=>date('Y'),
                     ]);
+                    if($request->akses_bayar_id==1 && $auth->sts_anggota==1){
+                            $cekoutsaldo=Simpanansukarela::UpdateOrcreate([
+                                'no_register'=>$auth->username,
+                                'nomortransaksi'=>$no_transaksi,
+                            ],[
+                                
+                                'nominal'=>$total,
+                                'kategori_status'=>2,
+                                'sts'=>2,
+                                'bulan'=>date('m'),
+                                'tahun'=>date('Y'),
+                                'created_at'=>date('Y-m-d H:i:s'),
+                                
+                            ]);
+                            $ceintsaldo=Simpanansukarela::UpdateOrcreate([
+                                'no_register'=>$auth->username,
+                                'nomortransaksi'=>$no_transaksi,
+                            ],[
+                                
+                                'nominal'=>($profit-(($profit*bagi_anggota())/100)),
+                                'kategori_status'=>2,
+                                'sts'=>1,
+                                'bulan'=>date('m'),
+                                'tahun'=>date('Y'),
+                                'created_at'=>date('Y-m-d H:i:s'),
+                                
+                            ]);
+                            $ceintadmin=Simpanansukarela::UpdateOrcreate([
+                                'no_register'=>'admin',
+                                'nomortransaksi'=>$no_transaksi,
+                            ],[
+                                
+                                'nominal'=>($profit-(($profit*bagi_koperasi())/100)),
+                                'kategori_status'=>2,
+                                'sts'=>1,
+                                'bulan'=>date('m'),
+                                'tahun'=>date('Y'),
+                                'created_at'=>date('Y-m-d H:i:s'),
+                                
+                            ]);
+                    }else{
+                        $ceintadmin=Simpanansukarela::UpdateOrcreate([
+                            'no_register'=>'admin',
+                            'nomortransaksi'=>$no_transaksi,
+                        ],[
+                            
+                            'nominal'=>$profit,
+                            'kategori_status'=>2,
+                            'sts'=>1,
+                            'bulan'=>date('m'),
+                            'tahun'=>date('Y'),
+                            'created_at'=>date('Y-m-d H:i:s'),
+                            
+                        ]);
+                    }
                     $totalcheck=VStok::where('check',1)->where('no_register',$auth->username)->where('status',0)->update(['no_transaksi'=>$no_transaksi,'status'=>2]);
                     return $this->sendResponse(true, 'success');
                 }

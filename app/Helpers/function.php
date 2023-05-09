@@ -318,6 +318,15 @@ function saldo_wajib_all(){
    
    return $data;
 }
+
+function bagi_anggota(){
+   $data=10;
+   return $data;
+}
+function bagi_koperasi(){
+   $data=90;
+   return $data;
+}
 function saldo_pokok_all(){
    
    $masuk=App\Simpananpokok::where('sts',1)->sum('nominal');
