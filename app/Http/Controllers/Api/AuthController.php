@@ -193,8 +193,8 @@ class AuthController extends BaseController
             $pinjamanaktif=false;
         }
         $success=[];
-        $success['saldo_wajib'] =  $user->saldo_wajib;
-        $success['saldo_sukarela'] =  $user->saldo_sukarela;
+        $success['saldo_wajib'] =  (int) $user->saldo_wajib;
+        $success['saldo_sukarela'] =  (int) $user->saldo_sukarela;
         $success['pinjaman_aktif'] =  $pinjamanaktif;
         return $this->sendResponse($success, 'success');
     }
