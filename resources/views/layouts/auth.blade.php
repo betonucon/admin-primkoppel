@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>Dekopinda</title>
+	<title>PRIMKOPPEL | STORE</title>
 	<link rel="icon" href="{{url('public/img/kopkar.png')}}">
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 	<meta content="" name="description" />
@@ -17,12 +17,38 @@
 			position: relative;
 			font-size: 25px;
 		}
+		.loadpage {
+			height: 100%;
+			width: 0;
+			position: fixed;
+			z-index: 1070;
+			top: 0;
+			left: 0;
+			background-color: rgb(0,0,0);
+			background-color: rgb(255 255 255 / 80%);
+			overflow-x: hidden;
+			transition: transform .9s;
+		}
+		.loadpage-content {
+			position: relative;
+			top: 10%;
+			width: 100%;
+			text-align: center;
+			margin-top: 30px;
+			color:#fff;
+			font-size:20px;
+		}
 	</style>
 </head>
 <body class="pace-top">
 	<!-- begin #page-loader -->
-	<div id="page-loader" class="fade show">
-		<span class="spinner"></span>
+	<div id="loadpage" class="loadpage">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <div class="loadpage-content">
+        
+            <img src="{{url_plug()}}/img/loadingok.gif" width="30%">
+        
+      </div>
 	</div>
 	<!-- end #page-loader -->
 	
@@ -126,5 +152,22 @@
 	<script src="{{url('public/assets/assets/js/app.min.js')}}"></script>
 	<script src="{{url('public/assets/assets/js/theme/default.min.js')}}"></script>
 	<!-- ================== END BASE JS ================== -->
+	<script type="text/javascript">
+   
+     	function load(){
+			document.getElementById("loadpage").style.width = "100%";
+		}
+		function close_load(){
+			document.getElementById("loadpage").style.width = "0%";
+		}
+		$(document).ready(function() {
+			
+			load();
+		});
+
+		window.setTimeout(function () {
+			document.getElementById("loadpage").style.width = "0%";
+		}, 1200);
+	</script>
 </body>
 </html>

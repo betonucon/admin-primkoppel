@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 Route::middleware('auth:sanctum')->group( function () {
+    Route::get('barang', [BarangController::class, 'barang']);
     Route::group(['prefix' => 'master'],function(){
         Route::get('nilai', [MasterController::class, 'nilai']);
         Route::get('akses_bayar', [MasterController::class, 'akses_bayar']);
@@ -46,5 +47,6 @@ Route::middleware('auth:sanctum')->group( function () {
     });
 });
 
-Route::get('barang', [BarangController::class, 'barang']);
+
+Route::get('barang_non', [BarangController::class, 'barang_non']);
 Route::post('register', [AuthController::class, 'register']);

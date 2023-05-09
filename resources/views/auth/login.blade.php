@@ -1,11 +1,10 @@
 @extends('layouts.auth')
 
 @section('app')	
-			<div class="right-content">
+			<div class="right-content" style="padding: 0px 60px 60px 60px;">
 				<!-- begin register-header -->
 				<h2 class="register-header" style="text-align:center">
-					<img src="{{url('public/img/kopkar.png')}}?v={{date('ymdhis')}}" width="12%">&nbsp;PRIMKOPPEL
-					<small>Primkoppel</small>
+					<img src="{{url('public/img/loadingok2.gif')}}?v={{date('ymdhis')}}" width="70%">&nbsp;
 				</h2>
 				<!-- end register-header -->
 				<!-- begin register-content -->

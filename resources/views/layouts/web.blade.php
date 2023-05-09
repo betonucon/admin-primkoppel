@@ -186,7 +186,7 @@
 	<div id="loadnya" class="loadnya">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <div class="loadnya-content">
-            
+			<img src="{{url_plug()}}/img/loadingok.gif" width="30%">
         </div>
 	</div> 
 	<!-- begin #page-container -->

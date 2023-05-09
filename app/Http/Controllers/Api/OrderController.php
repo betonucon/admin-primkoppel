@@ -253,7 +253,7 @@ class OrderController extends BaseController
                         'no_order'=>$no_transaksi,
                     ],[
                         'akses_bayar_id'=>$request->akses_bayar_id,
-                        'akses_order'=>2,
+                        'akses_order_id'=>2,
                         'status_bayar_id'=>$status_bayar,
                         'tgl_order'=>date('Y-m-d'),
                         'created_at'=>date('Y-m-d H:i:s'),
