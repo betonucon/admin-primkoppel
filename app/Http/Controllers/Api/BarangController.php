@@ -53,6 +53,7 @@ class BarangController extends BaseController
                 $cl['harga_jual'] = (int) round($o->harga_member);
                 $cl['harga_normal'] = (int) round($o->harga_jual);
                 $cl['satuan'] = $o->satuan;
+                $cl['terjual'] = singkat_angka($o->terjual);
                 $cl['diskon'] = $diskon;
                 $cl['stok'] = $o->stok;
                 $cl['foto'] = url_plug().'/_icon/'.$o->file;
