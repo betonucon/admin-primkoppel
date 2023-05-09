@@ -65,6 +65,10 @@ class OrderController extends BaseController
         foreach($data as $o){
             $detail=[];
             $detail['id']=$o->id;
+            $detail['akses_bayar']=$o->akses_bayar;
+            $detail['status_bayar']=$o->status_bayar;
+            $detail['akses_bayar_id']=$o->akses_bayar_id;
+            $detail['status_bayar_id']=$o->status_bayar_id;
             $detail['distributor']=$o->distributor;
             $detail['created']=$o->created_at;
             $detail['waktu']=facebook_time_ago($o->created_at);
