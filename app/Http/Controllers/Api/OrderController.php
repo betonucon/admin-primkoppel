@@ -67,8 +67,7 @@ class OrderController extends BaseController
             $detail['id']=$o->id;
             $detail['distributor']=$o->distributor;
             $detail['created']=$o->created_at;
-            $detail['qty']=$o->qty;
-            $detail['check']=$o->check;
+            $detail['waktu']=facebook_time_ago($o->created_at);
             $detail['total_barang']=(int) $o->total_barang;
             $detail['total_harga']=(int) $o->total_harga;
             $detail['icon_bayar']=url_plug().'/_icon/'.$o->icon;
