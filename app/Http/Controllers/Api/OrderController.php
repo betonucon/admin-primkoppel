@@ -12,6 +12,7 @@ use App\VUser;
 use App\VBarang;
 use App\Orderstok;
 use App\Stok;
+use App\Kasir;
 use App\VStok;
 use App\Tujuan;
 use App\VOrderstok;
@@ -276,13 +277,14 @@ class OrderController extends BaseController
                     if($request->akses_bayar_id==3){
                         $status_bayar=1;
                     }
-                    $no_transaksi=no_order();
-                    $save=Orderstok::UpdateOrcreate([
+                    $no_transaksi=no_kasir();
+                    $save=Kasir::UpdateOrcreate([
                         'no_register'=>$auth->username,
-                        'distributor'=>$auth->name,
+                        'konsumen'=>$auth->name,
                         'no_order'=>$no_transaksi,
                     ],[
                         'akses_bayar_id'=>$request->akses_bayar_id,
+                        'kategori'=>$auth->sts_anggota,
                         'akses_order_id'=>2,
                         'status_bayar_id'=>$status_bayar,
                         'tgl_order'=>date('Y-m-d'),
