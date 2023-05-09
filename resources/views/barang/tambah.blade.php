@@ -47,7 +47,7 @@
 	<div class="col-lg-3">
 		<div class="input-group input-group-sm">
 			<div class="input-group-prepend"><span class="input-group-text">Rp.</span></div>
-			<input type="text" class="form-control" name="harga_jual" id="harga_jual" value="{{$data->harga_modal}}" placeholder="Ketik disini....">
+			<input type="text" class="form-control" name="harga_jual" id="harga_jual" value="{{$data->harga_jual}}" placeholder="Ketik disini....">
 		</div>
 	</div>
 </div>
