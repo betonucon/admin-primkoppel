@@ -14,6 +14,7 @@ use App\Orderstok;
 use App\Stok;
 use App\VStok;
 use App\Tujuan;
+use App\VOrderstok;
 use Illuminate\Support\Facades\Auth;
 use Validator;
    
@@ -49,6 +50,32 @@ class OrderController extends BaseController
         }
         $success['total_check']=(int) $totalcheck;
         $success['total_bayar']=(int) $total;
+        $success['item']=$show;
+        return $this->sendResponse($success, 'success');
+    }
+    public function order(Request $request)
+    {
+        $auth = Auth::user(); 
+        $user = VUser::where('username',$auth->username)->first(); 
+        $belum=VOrderstok::where('no_register',$auth->username)->where('status_bayar_id',1)->count();
+        $lunas=VOrderstok::where('no_register',$auth->username)->where('status_bayar_id',2)->count();
+        $data=VOrderstok::where('no_register',$auth->username)->get();
+        $success=[];
+        $show=[];
+        foreach($data as $o){
+            $detail=[];
+            $detail['id']=$o->id;
+            $detail['distributor']=$o->distributor;
+            $detail['created']=$o->created_at;
+            $detail['qty']=$o->qty;
+            $detail['check']=$o->check;
+            $detail['total_barang']=(int) $o->total_barang;
+            $detail['total_harga']=(int) $o->total_harga;
+            $detail['icon_bayar']=url_plug().'/_icon/'.$o->icon;
+            $show[]=$detail;
+        }
+        $success['total_belum_dibayar']=(int) $belum;
+        $success['total_sudah_dibayar']=(int) $lunas;
         $success['item']=$show;
         return $this->sendResponse($success, 'success');
     }
@@ -238,13 +265,13 @@ class OrderController extends BaseController
                     return $this->sendResponseerror($error);
                 }else{
                     if($request->akses_bayar_id==1){
-                        $status_bayar=1;
+                        $status_bayar=2;
                     }
                     if($request->akses_bayar_id==2){
-                        $status_bayar=0;
+                        $status_bayar=1;
                     }
                     if($request->akses_bayar_id==3){
-                        $status_bayar=0;
+                        $status_bayar=1;
                     }
                     $no_transaksi=no_order();
                     $save=Orderstok::UpdateOrcreate([
