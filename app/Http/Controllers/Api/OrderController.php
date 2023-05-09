@@ -13,6 +13,7 @@ use App\VBarang;
 use App\Orderstok;
 use App\Stok;
 use App\Kasir;
+use App\VKasir;
 use App\VStok;
 use App\Tujuan;
 use App\VOrderstok;
@@ -58,9 +59,9 @@ class OrderController extends BaseController
     {
         $auth = Auth::user(); 
         $user = VUser::where('username',$auth->username)->first(); 
-        $belum=VOrderstok::where('no_register',$auth->username)->where('status_bayar_id',1)->count();
-        $lunas=VOrderstok::where('no_register',$auth->username)->where('status_bayar_id',2)->count();
-        $data=VOrderstok::where('no_register',$auth->username)->get();
+        $belum=VKasir::where('no_register',$auth->username)->where('status_bayar_id',1)->count();
+        $lunas=VKasir::where('no_register',$auth->username)->where('status_bayar_id',2)->count();
+        $data=VKasir::where('no_register',$auth->username)->get();
         $success=[];
         $show=[];
         foreach($data as $o){
@@ -70,7 +71,7 @@ class OrderController extends BaseController
             $detail['status_bayar']=$o->status_bayar;
             $detail['akses_bayar_id']=$o->akses_bayar_id;
             $detail['status_bayar_id']=$o->status_bayar_id;
-            $detail['distributor']=$o->distributor;
+            $detail['konsumen']=$o->konsumen;
             $detail['created']=$o->created_at;
             $detail['waktu']=facebook_time_ago($o->created_at);
             $detail['total_barang']=(int) $o->total_barang;
