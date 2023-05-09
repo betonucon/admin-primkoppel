@@ -113,9 +113,10 @@ class OrderController extends BaseController
                             'no_register'=>$auth->username,
                             'kode_barang'=>$request->kode_barang,
                             'status'=>0,
-                            'check'=>0,
                         ],[
                             'qty'=>$request->qty,
+                            'check'=>0,
+                        
                             'harga_modal'=>$mst->harga_modal,
                             'harga_jual'=>$mst->harga_jual,
                             'total_modal'=>($request->qty*$mst->harga_modal),
