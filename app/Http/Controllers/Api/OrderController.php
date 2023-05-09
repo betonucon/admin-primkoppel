@@ -301,11 +301,12 @@ class OrderController extends BaseController
                             $cekoutsaldo=Simpanansukarela::UpdateOrcreate([
                                 'no_register'=>$auth->username,
                                 'nomortransaksi'=>$no_transaksi,
+                                'sts'=>2,
+                                
                             ],[
                                 
                                 'nominal'=>$total,
                                 'kategori_status'=>2,
-                                'sts'=>2,
                                 'bulan'=>date('m'),
                                 'tahun'=>date('Y'),
                                 'created_at'=>date('Y-m-d H:i:s'),
@@ -314,11 +315,12 @@ class OrderController extends BaseController
                             $ceintsaldo=Simpanansukarela::UpdateOrcreate([
                                 'no_register'=>$auth->username,
                                 'nomortransaksi'=>$no_transaksi,
+                                'sts'=>1,
+                                
                             ],[
                                 
-                                'nominal'=>($profit-(($profit*bagi_anggota())/100)),
+                                'nominal'=>round($profit-(($profit*bagi_anggota())/100)),
                                 'kategori_status'=>2,
-                                'sts'=>1,
                                 'bulan'=>date('m'),
                                 'tahun'=>date('Y'),
                                 'created_at'=>date('Y-m-d H:i:s'),
@@ -329,7 +331,7 @@ class OrderController extends BaseController
                                 'nomortransaksi'=>$no_transaksi,
                             ],[
                                 
-                                'nominal'=>($profit-(($profit*bagi_koperasi())/100)),
+                                'nominal'=>ceil($profit-(($profit*bagi_koperasi())/100)),
                                 'kategori_status'=>2,
                                 'sts'=>1,
                                 'bulan'=>date('m'),
