@@ -294,7 +294,7 @@ class OrderController extends BaseController
                         'bulan'=>date('m'),
                         'tahun'=>date('Y'),
                     ]);
-                    $totalcheck=VStok::where('check',1)->where('no_register',$auth->username)->where('status',0)->update(['no_transaksi'=>$no_transaksi,'status'=>1]);
+                    $totalcheck=VStok::where('check',1)->where('no_register',$auth->username)->where('status',0)->update(['no_transaksi'=>$no_transaksi,'status'=>2]);
                     return $this->sendResponse(true, 'success');
                 }
         } catch(\Exception $e){
