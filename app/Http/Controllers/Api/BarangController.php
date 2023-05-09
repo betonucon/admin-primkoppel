@@ -42,7 +42,7 @@ class BarangController extends BaseController
                 if($o->diskon==0){
                     $diskon=0;
                 }else{
-                    $diskon=$o->diskon.'%';
+                    $diskon=$o->diskon;
                 }
                 $cl['id'] = $o->id;
                 $cl['kode_barang'] = $o->kode_barang;
@@ -54,7 +54,7 @@ class BarangController extends BaseController
                 $cl['harga_normal'] = (int) round($o->harga_jual);
                 $cl['satuan'] = $o->satuan;
                 $cl['terjual'] = singkat_angka($o->terjual);
-                $cl['diskon'] = $diskon;
+                $cl['diskon'] = (int) $diskon;
                 $cl['stok'] = $o->stok;
                 $cl['foto'] = url_plug().'/_icon/'.$o->file;
                 $col[]=$cl;
@@ -102,7 +102,7 @@ class BarangController extends BaseController
                 if($dis==0){
                     $diskon=0;
                 }else{
-                    $diskon=$dis.'%';
+                    $diskon=$dis;
                 }
                 $cl['id'] = $o->id;
                 $cl['kode_barang'] = $o->kode_barang;
@@ -114,7 +114,7 @@ class BarangController extends BaseController
                 $cl['harga_normal'] = (int) round($o->harga_jual);
                 $cl['satuan'] = $o->satuan;
                 $cl['terjual'] = singkat_angka($o->terjual);
-                $cl['diskon'] = $diskon;
+                $cl['diskon'] = (int) $diskon;
                 $cl['stok'] = $o->stok;
                 $cl['foto'] = url_plug().'/_icon/'.$o->file;
                 $col[]=$cl;
