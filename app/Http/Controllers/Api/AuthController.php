@@ -187,6 +187,11 @@ class AuthController extends BaseController
     {
         $auth = Auth::user(); 
         $user = VUser::where('username',$auth->username)->first(); 
+        if($user->pinjaman_aktif>0){
+            $pinjamanaktif=true;
+        }else{
+            $pinjamanaktif=false;
+        }
         $success=[];
         $success['saldo_wajib'] =  $user->saldo_wajib;
         $success['saldo_sukarela'] =  $user->saldo_sukarela;
