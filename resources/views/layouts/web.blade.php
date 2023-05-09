@@ -85,6 +85,7 @@
 		}
 		th{
 			background:#ededef;
+			padding: 7px 3px !important;
 			color:#000;
 		}
 		.loadnya {

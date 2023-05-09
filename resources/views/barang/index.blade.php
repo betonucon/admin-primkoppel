@@ -10,7 +10,7 @@
 			
 			if ($('#data-table-default').length !== 0) {
 				var table=$('#data-table-default').DataTable({
-					responsive: false,
+					responsive: true,
 					processing: false,
 					ordering: false,
 					serverSide: false,
@@ -26,6 +26,8 @@
 						{ data: 'kode_barang' },
 						{ data: 'nama_barang' },
 						{ data: 'satuan' , className: "text-center" },
+						{ data: 'diskon_anggota' , className: "text-center" },
+						{ data: 'diskon' , className: "text-center" },
 						{ data: 'uang_harga_modal', className: "text-right" },
 						{ data: 'uang_harga_jual', className: "text-right" },
 						{ data: 'stok', className: "text-right" },
@@ -106,6 +108,8 @@
 												<th width="10%">KODE</th>
 												<th class="text-nowrap">NAMA BARANG</th>
 												<th width="10%" class="text-nowrap">SATUAN</th>
+												<th width="10%" class="text-nowrap">DIS MEM</th>
+												<th width="10%" class="text-nowrap">DIS AGT</th>
 												<th width="15%" class="text-nowrap">HARGA MODAL</th>
 												<th width="15%" class="text-nowrap">HARGA JUAL</th>
 												<th width="10%" class="text-nowrap">STOK</th>

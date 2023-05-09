@@ -32,7 +32,7 @@
 	<label class="col-lg-3 col-form-label text-right">Deskripsi Barang</label>
 	<div class="col-lg-9">
 		<div class="input-group input-group-sm">
-			<textarea class="form-control" name="deskripsi" value="" placeholder="Ketik disini...." rows="6">{{$data->deskripsi}}</textarea>
+			<textarea class="form-control" name="deskripsi" value="" placeholder="Ketik disini...." rows="4">{{$data->deskripsi}}</textarea>
 		</div>
 	</div>
 </div>
@@ -48,6 +48,21 @@
 		<div class="input-group input-group-sm">
 			<div class="input-group-prepend"><span class="input-group-text">Rp.</span></div>
 			<input type="text" class="form-control" name="harga_jual" id="harga_jual" value="{{$data->harga_jual}}" placeholder="Ketik disini....">
+		</div>
+	</div>
+</div>
+<div class="form-group row">
+	<label class="col-lg-3 col-form-label text-right">Diskon Anggota & Member</label>
+	<div class="col-lg-3">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend"><span class="input-group-text">%</span></div>
+			<input type="text" class="form-control" name="diskon_anggota" id="diskon_anggota" value="{{$data->diskon_anggota}}" placeholder="Ketik disini....">
+		</div>
+	</div>
+	<div class="col-lg-3">
+		<div class="input-group input-group-sm">
+			<div class="input-group-prepend"><span class="input-group-text">%</span></div>
+			<input type="text" class="form-control" name="diskon" id="diskon" value="{{$data->diskon}}" placeholder="Ketik disini....">
 		</div>
 	</div>
 </div>
@@ -87,7 +102,7 @@
 </div>
 <div class="form-group row">
 	<label class="col-lg-3 col-form-label text-right">&nbsp;</label>
-	<div class="col-lg-2" style="background: #bebed5; margin-left: 1.5%; margin-top: 0px; min-height: 100px;">
+	<div class="col-lg-2" style="background: #bebed5; margin-left: 1.5%; margin-top: 0px; min-height: 80px;">
 		<div class="preview" >
 			@if($id>0)
 			<img id="file-ip-1-preview" src="{{url('public/_icon/')}}/{{$data->file}}"style="width:100%">
@@ -102,6 +117,8 @@
 
 	$("#notif_cek").hide();
 	$("#harga_modal").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
+	$("#diskon").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
+	$("#diskon_anggota").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
 	$("#harga_jual").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
 	function show_qr(text){
 		$.ajax({

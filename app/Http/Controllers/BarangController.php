@@ -186,6 +186,9 @@ class BarangController extends Controller
                         'nama_barang'=>$request->nama_barang,
                         'kategori_barang_id'=>$request->kategori_barang_id,
                         'satuan'=>$request->satuan,
+                        'diskon'=>ubah_uang($request->diskon),
+                    'diskon_anggota'=>ubah_uang($request->diskon_anggota),
+                        'diskon_anggota'=>$request->diskon_anggota,
                         'deskripsi'=>$request->deskripsi,
                         'harga_modal'=>ubah_uang($request->harga_modal),
                         'harga_jual'=>ubah_uang($request->harga_jual),
@@ -205,6 +208,8 @@ class BarangController extends Controller
                 ],[
                     'nama_barang'=>$request->nama_barang,
                     'satuan'=>$request->satuan,
+                    'diskon'=>ubah_uang($request->diskon),
+                    'diskon_anggota'=>ubah_uang($request->diskon_anggota),
                     'kategori_barang_id'=>$request->kategori_barang_id,
                     'deskripsi'=>$request->deskripsi,
                     'harga_modal'=>ubah_uang($request->harga_modal),

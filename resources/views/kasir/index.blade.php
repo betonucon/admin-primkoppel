@@ -10,7 +10,7 @@
 			
 			if ($('#data-table-default').length !== 0) {
 				var table=$('#data-table-default').DataTable({
-					responsive: false,
+					responsive: true,
 					processing: false,
 					ordering: false,
 					serverSide: false,
@@ -23,6 +23,8 @@
                         },
 						{ data: 'action', className: "text-center" },
 						{ data: 'no_order' },
+						{ data: 'status_bayar' },
+						{ data: 'akses_bayar' },
 						{ data: 'konsumen' },
 						{ data: 'tipe_konsumen' },
 						{ data: 'total_barang' , className: "text-center" },
@@ -103,6 +105,8 @@
 												<th width="5%">No</th>
 												<th width="5%"></th>
 												<th width="10%">NO ORDER</th>
+												<th width="10%">STS BAYAR</th>
+												<th width="10%">METODE</th>
 												<th class="text-nowrap">KONSUMEN</th>
 												<th width="12%" class="text-nowrap">TIPE</th>
 												<th width="9%" class="text-nowrap">ITEM</th>
