@@ -10,11 +10,11 @@
 			
 			if ($('#data-table-default').length !== 0) {
 				var table=$('#data-table-default').DataTable({
-					responsive: true,
+					responsive: false,
 					processing: false,
 					ordering: false,
 					serverSide: false,
-					ajax:"{{ url('barang/get_data')}}",
+					ajax:"{{ url('user/get_data')}}",
 					columns: [
 						{ data: 'id', render: function (data, type, row, meta) 
                             {
@@ -22,15 +22,10 @@
                             } 
                         },
 						{ data: 'action', className: "text-center" },
-						{ data: 'file', className: "text-center" },
-						{ data: 'kode_barang' },
-						{ data: 'nama_barang' },
-						{ data: 'satuan' , className: "text-center" },
-						{ data: 'diskon_anggota' , className: "text-center" },
-						{ data: 'diskon' , className: "text-center" },
-						{ data: 'uang_harga_modal', className: "text-right" },
-						{ data: 'uang_harga_jual', className: "text-right" },
-						{ data: 'stok', className: "text-right" },
+						{ data: 'username' },
+						{ data: 'name' },
+						{ data: 'email' },
+						{ data: 'group' },
 						
 						
 					],
@@ -104,15 +99,10 @@
 											<tr>
 												<th width="5%">No</th>
 												<th width="5%"></th>
-												<th width="5%"></th>
-												<th width="8%">KODE</th>
-												<th class="text-nowrap">NAMA BARANG</th>
-												<th width="10%" class="text-nowrap">SATUAN</th>
-												<th width="8%" class="text-nowrap">DIS MEM</th>
-												<th width="8%" class="text-nowrap">DIS AGT</th>
-												<th width="10%" class="text-nowrap">HARGA MODAL</th>
-												<th width="10%" class="text-nowrap">HARGA JUAL</th>
-												<th width="9%" class="text-nowrap">STOK</th>
+												<th width="10%">USERNAME</th>
+												<th class="text-nowrap">NAMA</th>
+												<th width="20%" class="text-nowrap">EMAIL</th>
+												<th width="10%" class="text-nowrap">GROUP</th>
 											</tr>
 											
 										</thead>
@@ -180,7 +170,7 @@
 		
 		function tambah(id){
 			$('#modal-tambah').modal('show');
-			$('#tampil_tambah').load("{{url('barang/tambah')}}?id="+id);
+			$('#tampil_tambah').load("{{url('user/tambah')}}?id="+id);
 			
 		}
 		function show_foto(file){
@@ -190,7 +180,7 @@
 		}
 		function show_foto(file,kode_qr){
 			$('#modal-file').modal('show');
-			$('#tampil_file').load("{{url('barang/view_file')}}?file="+file+"&kode_qr="+kode_qr);
+			$('#tampil_file').load("{{url('anggota/view_file')}}?file="+file+"&kode_qr="+kode_qr);
 			
 		}
 		function delete_data(id){
@@ -209,14 +199,14 @@
                if (willDelete) {
                        $.ajax({
                            type: 'GET',
-                           url: "{{url('barang/delete')}}",
+                           url: "{{url('anggota/delete')}}",
                            data: "id="+id,
                            success: function(msg){
                                swal("Success! berhasil terhapus!", {
                                    icon: "success",
                                });
                                var tables=$('#data-table-default').DataTable();
-                                tables.ajax.url("{{ url('barang/get_data')}}").load();
+                                tables.ajax.url("{{ url('anggota/get_data')}}").load();
                            }
                        });
                    
@@ -232,7 +222,7 @@
 				var form=document.getElementById('mydata');
 				$.ajax({
 					type: 'POST',
-					url: "{{ url('barang/') }}",
+					url: "{{ url('user/') }}",
 					data: new FormData(form),
 					contentType: false,
 					cache: false,
@@ -247,7 +237,7 @@
 							$('#modal-tambah').modal('hide');
 							$('#tampil_tambah').html("");
 							var tables=$('#data-table-default').DataTable();
-                                tables.ajax.url("{{ url('barang/get_data')}}").load();
+                                tables.ajax.url("{{ url('user/get_data')}}").load();
 						}else{
 							document.getElementById("loadnya").style.width = "0px";
 							

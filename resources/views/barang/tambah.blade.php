@@ -70,10 +70,10 @@
 	<label class="col-lg-3 col-form-label text-right">Satuan & Kategori</label>
 	<div class="col-lg-3">
 		<div class="input-group input-group-sm">
-			<select class="form-control form-control-sm"  name="satuan">
+			<select class="form-control form-control-sm"  name="satuan_id">
 				<option value="">Pilih Satuan---</option>
 				@foreach(get_satuan() as $no=>$sat)
-					<option value="{{$sat->satuan}}" @if($sat->satuan==$data->satuan) selected @endif >{{$no+1}}.{{$sat->satuan}}</option>
+					<option value="{{$sat->id}}" @if($sat->id==$data->satuan_id) selected @endif >{{$no+1}}.{{$sat->satuan}}</option>
 				@endforeach
 			</select>
 		</div>

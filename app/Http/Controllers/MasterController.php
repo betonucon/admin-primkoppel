@@ -1,97 +1,103 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Yajra\Datatables\Datatables;
 use Illuminate\Http\Request;
-use App\Saldowajib;
-use App\User;
-use App\Transaksi;
-use App\Anggota;
-use App\Karyawan;
-use App\Simpanansukarela;
-use App\Simpananwajib;
-use App\Periodepinjaman;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Milon\Barcode\DNS1D;
+use Validator;
+use App\Vanggota;
+use App\Barang;
+use App\VBarang;
+use App\Satuan;
+use App\User;
 class MasterController extends Controller
 {
-    public function buatanggota(request $request){
-        $data=User::all();
-        foreach($data as $no=>$o){
-            $save  = New Simpanansukarela;
-            $save->bulan = '02';
-            $save->nominal = '0';
-            $save->tahun = 2022;
-            $save->nomortransaksi = 'SS202109'.sprintf("%05s", ($no+1));
-            $save->nik = $o['username'];
-            $save->save();
-        }
+    public function index_satuan(request $request){
+        $menu='Daftar Satuan';
+        return view('master.index_satuan',compact('menu'));
     }
-    // public function buatanggota(request $request){
-    //     $data=Anggota::all();
-    //     foreach($data as $o){
-    //         $save  = New User;
-    //         $save->name = $o['name'];
-    //         $save->username = $o['nik'];
-    //         $save->status = $o['status'];
-    //         $save->email = $o['nik'].'@gmail.com';
-    //         $save->role_id = 4;
-    //         $save->sts_anggota = 1;
-    //         $save->password = Hash::make($o['nik']);
-    //         $save->save();
-    //     }
-    // }
-    public function map(request $request){
-        $data=Karyawan::orderBy('nik','asc')->get();
+
+    
+    
+    public function tambah_satuan(request $request){
+        error_reporting(0);
+        $id=$request->id;
+        if($id!=0){
+            $read='readonly';
+        }else{
+            $read='';
+        }
+        $data=Satuan::where('id',$request->id)->first();
+        return view('master.tambah_satuan',compact('data','id','read'));
+    }
+    
+    public function get_data_satuan(request $request){
+        $data=Satuan::where('active',1)->orderBy('satuan','Asc')->get();
+       
+        return  Datatables::of($data)->addIndexColumn()
+                ->addColumn('action', function($data){
+                    $btn='
+                            <div class="btn-group btn-group-sm dropup m-r-5">
+								<a href="#" data-toggle="dropdown" class="btn btn-primary btn-xs dropdown-toggle">Act <b class="caret"></b></a>
+								<div class="dropdown-menu dropdown-menu-right">
+									<a href="javascript:;" class="dropdown-item">Action Button</a>
+									<div class="dropdown-divider"></div>
+                                    <a href="javascript:;" onclick="tambah('.$data->id.')" class="dropdown-item"><i class="fas fa-pencil-alt fa-fw"></i> Ubah</a>
+									<a href="javascript:;" onclick="delete_data('.$data->id.')"  class="dropdown-item"><i class="fas fa-trash-alt fa-fw"></i> Hapus</a>
+									
+								</div>
+							</div>
+                    ';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+    }
+   
+
+    public function hapus_data_satuan(request $request){
+        error_reporting(0);
+        $delanggota=Satuan::where('id',$request->id)->update(['active'=>0]);
+       
+    }
+    
+    public function save_data_satuan(request $request){
+        error_reporting(0);
         
-        foreach($data as $no=>$o){
-            
-            // $transaksi=User::where('username',$o['nik'])->update([
-            //     'email'=>$o['email'],
-            //     'name'=>$o['name'],
-            //     'role_id'=>4,
-            //     'sts_anggota'=>4,
-            //     'sts_password'=>0,
-            //     'aktif'=>0,
-            //     'status'=>'Kontrak',
-            // ]);
-            
+        $rules = [];
+        $messages = [];
+        
+        $rules['satuan']= 'required';
+        $messages['satuan.required']= 'Silahkan isi satuan';
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+        $val=$validator->Errors();
+
+
+        if ($validator->fails()) {
+            echo'<div style="padding:1%;background:##f3f3f3">Error !<br>';
+            foreach(parsing_validator($val) as $value){
+                foreach($value as $isi){
+                    echo'-&nbsp;'.$isi.'<br>';
+                }
+            }
+            echo'</div>';
+        }else{
+           
+                $save=Satuan::UpdateOrcreate([
+                    'satuan'=>$request->satuan,
+                ],[
+                    'satuan_pecah'=>$request->satuan_pecah,
+                    'active'=>1,
+                    
+                ]);
+                
+                echo'@ok';
+                
+           
         }
-
-        // $data=Periodepinjaman::where('sts',1)->orderBy('id','asc')->get();
-        // foreach($data as $no=>$o){
-            
-        //     $transaksi=Transaksi::create([
-        //         'kodetransaksi'=>$o['nomorpinjaman'],
-        //         'kategori_id'=>1,
-        //         'name'=>'Pembayaran Pinjaman '.$o['name'].' '.$o->pinjaman->user['name'],
-        //         'bulan'=>date('m',strtotime($o['tanggal'])),
-        //         'tahun'=>date('Y',strtotime($o['tanggal'])),
-        //         'tanggal'=>$o['tanggal'],
-        //         'nominal'=>$o['nominal'],
-        //         'margin'=>$o['margin'],
-        //         'sts'=>1,
-        //     ]);
-            
-        // }
-        // $data=Pinjaman::orderBy('id','asc')->get();
-        // foreach($data as $no=>$o){
-            
-        //     $transaksi=Transaksi::create([
-        //         'kodetransaksi'=>$o['nomorpinjaman'],
-        //         'kategori_id'=>1,
-        //         'name'=>'Pengajuan Pinjaman  '.$o->user['name'],
-        //         'bulan'=>date('m',strtotime($o['tgl_pengajuan'])),
-        //         'tahun'=>date('Y',strtotime($o['tgl_pengajuan'])),
-        //         'tanggal'=>$o['tgl_pengajuan'],
-        //         'nominal'=>$o['nominal'],
-        //         'sts'=>2,
-        //     ]);
-            
-        // }
     }
-
-    public function ubah_rupiah(request $request){
-        $data=number_format($request->nominal,0);
-        echo $data;
-    }
+    
 }

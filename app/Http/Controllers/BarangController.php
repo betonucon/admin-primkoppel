@@ -139,8 +139,8 @@ class BarangController extends Controller
         $messages['harga_jual.required']= 'Masukan harga jual ';
         $messages['harga_jual.not_in']= 'Masukan harga jual ';
         
-        $rules['satuan']= 'required';
-        $messages['satuan.required']= 'Silahkan pilih satuan';
+        $rules['satuan_id']= 'required';
+        $messages['satuan_id.required']= 'Silahkan pilih satuan';
         $rules['kategori_barang_id']= 'required';
         $messages['kategori_barang_id.required']= 'Silahkan pilih kategori';
         if($request->id==0){
@@ -185,9 +185,9 @@ class BarangController extends Controller
                         'kode_qr'=>$kode_qr,
                         'nama_barang'=>$request->nama_barang,
                         'kategori_barang_id'=>$request->kategori_barang_id,
-                        'satuan'=>$request->satuan,
+                        'satuan_id'=>$request->satuan_id,
                         'diskon'=>ubah_uang($request->diskon),
-                    'diskon_anggota'=>ubah_uang($request->diskon_anggota),
+                        'diskon_anggota'=>ubah_uang($request->diskon_anggota),
                         'diskon_anggota'=>$request->diskon_anggota,
                         'deskripsi'=>$request->deskripsi,
                         'harga_modal'=>ubah_uang($request->harga_modal),
@@ -207,7 +207,7 @@ class BarangController extends Controller
                     'id'=>$request->id,
                 ],[
                     'nama_barang'=>$request->nama_barang,
-                    'satuan'=>$request->satuan,
+                    'satuan_id'=>$request->satuan_id,
                     'diskon'=>ubah_uang($request->diskon),
                     'diskon_anggota'=>ubah_uang($request->diskon_anggota),
                     'kategori_barang_id'=>$request->kategori_barang_id,

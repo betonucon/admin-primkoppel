@@ -11,6 +11,7 @@ use App\Vanggota;
 use App\Barang;
 use App\VBarang;
 use App\Anggota;
+use App\VAdmin;
 use App\Agt;
 use App\User;
 use App\VUser;
@@ -19,6 +20,10 @@ class AnggotaController extends Controller
     public function index(request $request){
         $menu='Anggota';
         return view('anggota.index',compact('menu'));
+    }
+    public function index_admin(request $request){
+        $menu='Admin';
+        return view('admin.index',compact('menu'));
     }
 
     public function cari_qr(request $request){
@@ -92,6 +97,17 @@ class AnggotaController extends Controller
         $data=Anggota::where('id',$request->id)->first();
         return view('anggota.tambah',compact('data','id','read'));
     }
+    public function tambah_admin(request $request){
+        error_reporting(0);
+        $id=$request->id;
+        if($id!=0){
+            $disabled='disabled';
+        }else{
+            $disabled='';
+        }
+        $data=VAdmin::where('id',$request->id)->first();
+        return view('admin.tambah',compact('data','id','disabled'));
+    }
     public function view_file(request $request){
         error_reporting(0);
         $view='
@@ -139,6 +155,31 @@ class AnggotaController extends Controller
                 
                 
                 ->rawColumns(['action','file'])
+                ->make(true);
+    }
+    public function get_data_admin(request $request){
+        error_reporting(0);
+        $data=VAdmin::where('active',1)->orderBy('name','Asc')->get();
+       
+        return  Datatables::of($data)->addIndexColumn()
+                ->addColumn('action', function($data){
+                    $btn='
+                            <div class="btn-group btn-group-sm dropup m-r-5">
+								<a href="#" data-toggle="dropdown" class="btn btn-primary btn-xs dropdown-toggle">Act <b class="caret"></b></a>
+								<div class="dropdown-menu dropdown-menu-right">
+									<a href="javascript:;" class="dropdown-item">Action Button</a>
+									<div class="dropdown-divider"></div>
+                                    <a href="javascript:;" onclick="tambah('.$data->id.')" class="dropdown-item"><i class="fas fa-pencil-alt fa-fw"></i> Ubah</a>
+									<a href="javascript:;" onclick="delete_data('.$data->id.')"  class="dropdown-item"><i class="fas fa-trash-alt fa-fw"></i> Hapus</a>
+									
+								</div>
+							</div>
+                    ';
+                    return $btn;
+                })
+                
+                
+                ->rawColumns(['action'])
                 ->make(true);
     }
 
@@ -233,6 +274,90 @@ class AnggotaController extends Controller
                     'updated_at'=>date('Y-m-d H:i:s'),
                     
                 ]);
+                echo'@ok';
+                
+            }
+        }
+    }
+    public function save_data_admin(request $request){
+        error_reporting(0);
+        
+        $rules = [];
+        $messages = [];
+        if($request->id==0){
+            $rules['username']= 'required|numeric|unique:users';
+            $messages['username.required']= 'Silahkan isi username dengan angka';
+            $messages['username.numeric']= 'Silahkan isi username dengan angka';
+            $messages['username.unique']= 'username sudah terdaftar';
+            $rules['email']= 'required|email|unique:users';
+            $messages['email.email']= 'Format email salah';
+            $messages['email.unique']= 'Email sudah terdaftar';
+        }
+        $rules['name']= 'required';
+        $messages['name.required']= 'Silahkan isi nama user';
+        $rules['group']= 'required';
+        $messages['group.required']= 'Pilih group';
+        $rules['password']= 'required';
+        $messages['password.required']= 'Silahkan isi password';
+        
+        
+        $validator = Validator::make($request->all(), $rules, $messages);
+        $val=$validator->Errors();
+
+
+        if ($validator->fails()) {
+            echo'<div style="padding:1%;background:##f3f3f3">Error !<br>';
+            foreach(parsing_validator($val) as $value){
+                foreach($value as $isi){
+                    echo'-&nbsp;'.$isi.'<br>';
+                }
+            }
+            echo'</div>';
+        }else{
+            if($request->id==0){
+                    
+                    $saveuser=User::create([
+                        'username'=>$request->username,
+                        'name'=>$request->name,
+                        'email'=>$request->email,
+                        'group'=>$request->group,
+                        'role_id'=>3,
+                        'sts_anggota'=>2,
+                        'active'=>1,
+                        'akses_admin'=>1,
+                        'password'=>Hash::make($request->password),
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        
+                    ]);
+                    echo'@ok';
+                   
+                
+                
+            }else{
+                $mst=User::where('id',$request->id)->first();
+                
+                $saveuser=User::UpdateOrcreate([
+                    'id'=>$request->id,
+                ],[
+                    'name'=>$request->name,
+                    'group'=>$request->group,
+                    'role_id'=>3,
+                    'sts_anggota'=>2,
+                    'active'=>1,
+                    'akses_admin'=>1,
+                    'updated_at'=>date('Y-m-d H:i:s'),
+                    
+                ]);
+
+                if($request->password!=$mst->password){
+                    $saveuser=User::UpdateOrcreate([
+                        'id'=>$request->id,
+                    ],[
+                        'password'=>Hash::make($request->password),
+                        'updated_at'=>date('Y-m-d H:i:s'),
+                        
+                    ]);
+                }
                 echo'@ok';
                 
             }

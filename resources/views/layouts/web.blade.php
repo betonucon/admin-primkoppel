@@ -196,7 +196,7 @@
 		<div id="header" class="header navbar-default">
 			<!-- begin navbar-header -->
 			<div class="navbar-header">
-				<a href="{{url('public//')}}" class="navbar-brand"><span class="navbar-logo"><img src="{{url('public/img/logo.png')}}?v={{date('ymdhis')}}" width="100%"></span> <b>PRIMKOPPEL STORE</b></a>
+				<a href="{{url('public//')}}" class="navbar-brand"><span class="navbar-logo"><b>PRIMKOPPEL STORE</b></a>
 				<button type="button" class="navbar-toggle" data-click="top-menu-toggled">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>

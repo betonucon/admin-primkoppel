@@ -4,9 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Satuan extends Model
+class VAdmin extends Model
 {
-    protected $table = 'satuan';
-    protected $guarded = ['id'];
+    protected $table = 'view_admin';
     public $timestamps = false;
 }

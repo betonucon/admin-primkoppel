@@ -14,7 +14,7 @@
 					processing: false,
 					ordering: false,
 					serverSide: false,
-					ajax:"{{ url('barang/get_data')}}",
+					ajax:"{{ url('master/satuan/get_data')}}",
 					columns: [
 						{ data: 'id', render: function (data, type, row, meta) 
                             {
@@ -22,15 +22,8 @@
                             } 
                         },
 						{ data: 'action', className: "text-center" },
-						{ data: 'file', className: "text-center" },
-						{ data: 'kode_barang' },
-						{ data: 'nama_barang' },
-						{ data: 'satuan' , className: "text-center" },
-						{ data: 'diskon_anggota' , className: "text-center" },
-						{ data: 'diskon' , className: "text-center" },
-						{ data: 'uang_harga_modal', className: "text-right" },
-						{ data: 'uang_harga_jual', className: "text-right" },
-						{ data: 'stok', className: "text-right" },
+						{ data: 'satuan' },
+						{ data: 'satuan_pecah' , className: "text-center" },
 						
 						
 					],
@@ -83,7 +76,7 @@
 					<div class="panel panel-inverse" data-sortable-id="form-plugins-1">
 						<!-- begin panel-heading -->
 						<div class="panel-heading">
-							<h4 class="panel-title">MASTER BARANG</h4>
+							<h4 class="panel-title">MASTER SATUAN</h4>
 							<div class="panel-heading-btn">
 								<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
 							</div>
@@ -104,15 +97,8 @@
 											<tr>
 												<th width="5%">No</th>
 												<th width="5%"></th>
-												<th width="5%"></th>
-												<th width="8%">KODE</th>
-												<th class="text-nowrap">NAMA BARANG</th>
-												<th width="10%" class="text-nowrap">SATUAN</th>
-												<th width="8%" class="text-nowrap">DIS MEM</th>
-												<th width="8%" class="text-nowrap">DIS AGT</th>
-												<th width="10%" class="text-nowrap">HARGA MODAL</th>
-												<th width="10%" class="text-nowrap">HARGA JUAL</th>
-												<th width="9%" class="text-nowrap">STOK</th>
+												<th class="text-nowrap">SATUAN</th>
+												<th width="10%" class="text-nowrap">PECAH</th>
 											</tr>
 											
 										</thead>
@@ -136,8 +122,10 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
-								<form  class="form-horizontal " id="mydata" action="{{url('/Warga/')}}" method="post" enctype="multipart/form-data">
-                                    @csrf
+								<form  class="form-horizontal " id="mydata" action="{{ url('master/satuan/') }}" method="post" enctype="multipart/form-data">
+                                    
+									@csrf
+									<input type="submit">
 									
                                     	<div id="tampil_tambah"></div>
 									
@@ -180,7 +168,7 @@
 		
 		function tambah(id){
 			$('#modal-tambah').modal('show');
-			$('#tampil_tambah').load("{{url('barang/tambah')}}?id="+id);
+			$('#tampil_tambah').load("{{url('master/satuan/tambah')}}?id="+id);
 			
 		}
 		function show_foto(file){
@@ -209,14 +197,14 @@
                if (willDelete) {
                        $.ajax({
                            type: 'GET',
-                           url: "{{url('barang/delete')}}",
+                           url: "{{url('master/satuan/delete')}}",
                            data: "id="+id,
                            success: function(msg){
                                swal("Success! berhasil terhapus!", {
                                    icon: "success",
                                });
                                var tables=$('#data-table-default').DataTable();
-                                tables.ajax.url("{{ url('barang/get_data')}}").load();
+                                tables.ajax.url("{{ url('master/satuan/get_data')}}").load();
                            }
                        });
                    
@@ -232,7 +220,7 @@
 				var form=document.getElementById('mydata');
 				$.ajax({
 					type: 'POST',
-					url: "{{ url('barang/') }}",
+					url: "{{ url('master/satuan/') }}",
 					data: new FormData(form),
 					contentType: false,
 					cache: false,
@@ -247,7 +235,7 @@
 							$('#modal-tambah').modal('hide');
 							$('#tampil_tambah').html("");
 							var tables=$('#data-table-default').DataTable();
-                                tables.ajax.url("{{ url('barang/get_data')}}").load();
+                                tables.ajax.url("{{ url('master/satuan/get_data')}}").load();
 						}else{
 							document.getElementById("loadnya").style.width = "0px";
 							

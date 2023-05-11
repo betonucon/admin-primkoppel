@@ -6,7 +6,12 @@
 					</a>
 				</li>
 				@if(Auth::user()['role_id']==1)
-					
+					<li class="has-sub">
+						<a href="{{url('user')}}">
+							<i class="fa fa-users"></i>
+							<span>User Akses</span>
+						</a>
+					</li>
 					<li class="has-sub">
 						<a href="javascript:;">
 							<b class="caret"></b>
@@ -16,6 +21,18 @@
 						<ul class="sub-menu">
 							<li><a href="{{url('anggota')}}">Anggota </a></li>
 							<li><a href="{{url('anggota')}}">Stok Barang</a></li>
+							
+						</ul>
+					</li>
+					<li class="has-sub">
+						<a href="javascript:;">
+							<b class="caret"></b>
+							<i class="fa fa-cog"></i>
+							<span>Master</span> 
+						</a>
+						<ul class="sub-menu">
+							<li><a href="{{url('master/satuan')}}">Satuan </a></li>
+							<li><a href="{{url('master/satuan_besar')}}">Satuan Besar</a></li>
 							
 						</ul>
 					</li>

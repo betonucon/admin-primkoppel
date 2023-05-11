@@ -63,6 +63,14 @@ Route::group(['prefix' => 'barang','middleware'    => 'auth'],function(){
     Route::post('/',[BarangController::class, 'save_data']);
     Route::get('/delete',[BarangController::class, 'hapus_data']);
 });
+Route::group(['prefix' => 'master','middleware'    => 'auth'],function(){
+    Route::get('/satuan',[MasterController::class, 'index_satuan']);
+    Route::get('/satuan/get_data',[MasterController::class, 'get_data_satuan']);
+    Route::get('/satuan/tambah',[MasterController::class, 'tambah_satuan']);
+    Route::get('/satuan/get_data',[MasterController::class, 'get_data_satuan']);
+    Route::post('/satuan',[MasterController::class, 'save_data_satuan']);
+    Route::get('/satuan/delete',[MasterController::class, 'hapus_data_satuan']);
+});
 
 Route::group(['prefix' => 'orderstok','middleware'    => 'auth'],function(){
     Route::get('/',[OrderstokController::class, 'index']);
@@ -110,6 +118,18 @@ Route::group(['prefix' => 'anggota','middleware'    => 'auth'],function(){
     Route::get('/view_file',[AnggotaController::class, 'view_file']);
     Route::get('/cari_anggota',[AnggotaController::class, 'cari_anggota']);
     Route::post('/',[AnggotaController::class, 'save_data']);
+    Route::get('/delete',[AnggotaController::class, 'hapus_data']);
+});
+Route::group(['prefix' => 'user','middleware'    => 'auth'],function(){
+    Route::get('/',[AnggotaController::class, 'index_admin']);
+    Route::get('/tambah',[AnggotaController::class, 'tambah_admin']);
+    Route::get('/get_import',[AnggotaController::class, 'get_import_admin']);
+    Route::get('/get_user',[AnggotaController::class, 'get_user_admin']);
+    Route::get('/cari_qr',[AnggotaController::class, 'cari_qr_admin']);
+    Route::get('/get_data',[AnggotaController::class, 'get_data_admin']);
+    Route::get('/view_file',[AnggotaController::class, 'view_file_admin']);
+    Route::get('/cari_anggota',[AnggotaController::class, 'cari_anggota_admin']);
+    Route::post('/',[AnggotaController::class, 'save_data_admin']);
     Route::get('/delete',[AnggotaController::class, 'hapus_data']);
 });
 Route::group(['prefix' => 'simpanan','middleware'    => 'auth'],function(){
