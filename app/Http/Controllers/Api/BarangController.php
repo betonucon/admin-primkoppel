@@ -112,7 +112,7 @@ class BarangController extends BaseController
                 $cl['harga_modal'] = (int) round($o->harga_modal);
                 $cl['harga_jual'] = (int) round($harga);
                 $cl['harga_normal'] = (int) round($o->harga_jual);
-                $cl['satuan'] = $o->satuan;
+                $cl['satuan'] = $o->nama_satuan;
                 $cl['terjual'] = singkat_angka($o->terjual);
                 $cl['diskon'] = (int) $diskon;
                 $cl['stok'] = $o->stok;

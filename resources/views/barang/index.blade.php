@@ -25,7 +25,7 @@
 						{ data: 'file', className: "text-center" },
 						{ data: 'kode_barang' },
 						{ data: 'nama_barang' },
-						{ data: 'satuan' , className: "text-center" },
+						{ data: 'nama_satuan' , className: "text-center" },
 						{ data: 'diskon_anggota' , className: "text-center" },
 						{ data: 'diskon' , className: "text-center" },
 						{ data: 'uang_harga_modal', className: "text-right" },
