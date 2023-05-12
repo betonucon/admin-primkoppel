@@ -39,7 +39,7 @@ class MasterController extends BaseController
     }
     public function akses_bayar(Request $request)
     {
-        $data=Aksesbayar::orderBy('id','Asc')->get();
+        $data=Aksesbayar::whereIn('id',array(1,2,3))->orderBy('id','Asc')->get();
         $col = [];
             
             foreach($data as $o){

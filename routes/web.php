@@ -98,6 +98,7 @@ Route::group(['prefix' => 'kasir','middleware'    => 'auth'],function(){
     Route::get('/view',[KasirController::class, 'view']);
     Route::get('/cari_qr',[KasirController::class, 'cari_qr']);
     Route::get('/get_data',[KasirController::class, 'get_data']);
+    Route::get('/cetak',[KasirController::class, 'cetak']);
     Route::get('/get_data_stok',[KasirController::class, 'get_data_stok']);
     Route::get('/view_file',[KasirController::class, 'view_file']);
     Route::get('/cari_anggota',[KasirController::class, 'cari_anggota']);

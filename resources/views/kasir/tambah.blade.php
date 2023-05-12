@@ -45,6 +45,7 @@
 					<option value="{{$sat->no_register}}" >{{$sat->name}}  ({{$sat->perusahaan}})</option>
 				@endforeach
 			</select>
+			
 		</div>
 	</div>
 </div>

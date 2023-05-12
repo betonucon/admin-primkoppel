@@ -19,10 +19,10 @@
 	</div>
 </div>
 <div class="form-group row">
-	<label class="col-lg-3 col-form-label text-right">Distributor</label>
+	<label class="col-lg-3 col-form-label text-right">Konsumen</label>
 	<div class="col-lg-9">
 		<div class="input-group input-group-sm">
-			<input type="text" disabled class="form-control" name="distributor" value="{{$data->distributor}}" placeholder="Ketik disini....">
+			<input type="text" disabled class="form-control" name="konsumen" value="{{$data->konsumen}}" placeholder="Ketik disini....">
 		</div>
 	</div>
 </div>
@@ -30,7 +30,20 @@
 	<label class="col-lg-3 col-form-label text-right">Total</label>
 	<div class="col-lg-5">
 		<div class="input-group input-group-sm">
-			<input type="text" disabled class="form-control" name="total_harga" value="{{uang($data->total_harga)}}" placeholder="Ketik disini....">
+			<input type="text" disabled class="form-control" name="total_harga" id="total_harga" value="{{$data->total_harga}}" placeholder="Ketik disini....">
+		</div>
+	</div>
+</div>
+<div class="form-group row">
+	<label class="col-lg-3 col-form-label text-right">Metode Bayar </label>
+	<div class="col-lg-5">
+		<div class="input-group input-group-sm">
+			<select class="form-control form-control-sm" id="default-select2" name="akses_bayar_id">
+				<option value="">Pilih---</option>
+				@foreach(get_akses_bayar($data->kategori) as $no=>$sat)
+					<option value="{{$sat->id}}" >{{$no+1}}. {{$sat->akses_bayar}}</option>
+				@endforeach
+			</select>
 		</div>
 	</div>
 </div>
@@ -42,6 +55,7 @@
 		autoclose: true,
 		format:'yyyy-mm-dd'
 	});
+	$("#total_harga").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
 	$("#harga_modal").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
 	$("#harga_jual").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
 	function show_qr(text){

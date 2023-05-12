@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Group extends Model
+class VSatuan extends Model
 {
-    protected $table = 'm_group';
+    protected $table = 'view_satuan';
     protected $guarded = ['id'];
     public $timestamps = false;
 }

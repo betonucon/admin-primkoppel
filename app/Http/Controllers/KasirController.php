@@ -12,9 +12,11 @@ use App\Barang;
 use App\VStok;
 use App\Stok;
 use App\VBarang;
+use App\Simpanansukarela;
 use App\Kasir;
 use App\VKasir;
 use App\User;
+use PDF;
 class KasirController extends Controller
 {
     public function index(request $request){
@@ -191,6 +193,9 @@ class KasirController extends Controller
                 $save=Kasir::create([
                     'no_order'=>$no_order,
                     'tgl_order'=>$request->tgl_order,
+                    'akses_order_id'=>1,
+                    'username'=>Auth::user()->username,
+                    'group'=>Auth::user()->group,
                     'kategori'=>$request->kategori,
                     'no_register'=>$no_register,
                     'konsumen'=>$konsumen,
@@ -250,23 +255,28 @@ class KasirController extends Controller
         }else{
             $no_order=$request->no_order;
             $mst=Barang::where('kode_barang',$request->kode_barang)->first();
-            $selisih=(ubah_uang($request->harga_jual)-$mst->harga_modal);
-            $profit=($selisih*ubah_uang($request->qty));
-            if(ubah_uang($request->qty)>$request->stok){
+            $stc=Stok::where('kode_barang',$request->kode_barang)->where('no_transaksi',$no_order)->first();
+            
+            if(ubah_uang($request->qty)>($request->stok+$stc->qty)){
                 echo'<div style="padding:1%;background:##f3f3f3">Error !<br> Stok tidak mencukupi</div>';
             }else{
+                $potongan=((ubah_uang($request->harga_jual)*ubah_uang($request->diskon))/100);
+                $harga=ceil(ubah_uang($request->harga_jual)-$potongan);
+                $selisih=($harga-$mst->harga_modal);
+                $profit=($selisih*ubah_uang($request->qty));
                 $save=Stok::UpdateOrcreate([
                     'no_transaksi'=>$no_order,
                     'kode_barang'=>$request->kode_barang,
                     'status'=>2,
                 ],[
+                    'diskon'=>ubah_uang($request->diskon),
                     'qty'=>ubah_uang($request->qty),
-                    'harga_jual'=>ubah_uang($request->harga_jual),
+                    'harga_jual'=>$harga,
                     'total_modal'=>($mst->harga_modal*ubah_uang($request->qty)),
-                    'total'=>(ubah_uang($request->harga_jual)*ubah_uang($request->qty)),
+                    'total'=>($harga*ubah_uang($request->qty)),
                     'harga_modal'=>$mst->harga_modal,
                     'profit'=>$profit,
-                    'total_jual'=>($mst->harga_jual*ubah_uang($request->qty)),
+                    'total_jual'=>($harga*ubah_uang($request->qty)),
                     'created_at'=>date('Y-m-d H:i:s'),
                     
                 ]);
@@ -278,14 +288,139 @@ class KasirController extends Controller
     }
     public function save_bayar(request $request){
         error_reporting(0);
+        $mst=VKasir::where('id',$request->id)->first();
+        $getbarang=Stok::where('no_transaksi',$mst->no_order)->get();
+        $rules = [];
+        $messages = [];
         
+        $rules['akses_bayar_id']= 'required';
+        $messages['akses_bayar_id.required']= 'Pilih Metode Bayar';
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+        $val=$validator->Errors();
+
+
+        if ($validator->fails()) {
+            echo'<div style="padding:1%;background:##f3f3f3">Error !<br>';
+            foreach(parsing_validator($val) as $value){
+                foreach($value as $isi){
+                    echo'-&nbsp;'.$isi.'<br>';
+                }
+            }
+            echo'</div>';
+        }else{
         
-            $save=Orderstok::where('id',$request->id)->update([
-                'status'=>2,
-               
-            ]);
-            echo'@ok@';
+            if($request->akses_bayar_id==1){
+                $status_bayar=2;
+            }
+            if($request->akses_bayar_id==2){
+                $status_bayar=1;
+            }
+            if($request->akses_bayar_id==3){
+                $status_bayar=1;
+            }
+            if($mst->kategori==2){
+                if($request->akses_bayar_id==1){
+                    if(saldo_sukarela($mst->no_register)>=$mst->total_harga){
+                        $save=Kasir::where('id',$request->id)->update([
+                            'status'=>2,
+                            'akses_bayar_id'=>$request->akses_bayar_id,
+                            'status_bayar_id'=>$status_bayar,
+                            'username'=>Auth::user()->username,
+                            'group'=>Auth::user()->group,
+                        
+                        ]);
+                        $cekoutsaldo=Simpanansukarela::UpdateOrcreate([
+                            'no_register'=>$mst->no_register,
+                            'nomortransaksi'=>$mst->no_order,
+                            'sts'=>2,
+                            
+                        ],[
+                            
+                            'nominal'=>$mst->total_harga,
+                            'kategori_status'=>2,
+                            'bulan'=>date('m'),
+                            'tahun'=>date('Y'),
+                            'created_at'=>date('Y-m-d H:i:s'),
+                            
+                        ]);
+                        $ceintsaldo=Simpanansukarela::UpdateOrcreate([
+                            'no_register'=>$mst->no_register,
+                            'nomortransaksi'=>$mst->no_order,
+                            'sts'=>1,
+                            
+                        ],[
+                            
+                            'nominal'=>round(($mst->profit*bagi_anggota())/100),
+                            'kategori_status'=>2,
+                            'bulan'=>date('m'),
+                            'tahun'=>date('Y'),
+                            'created_at'=>date('Y-m-d H:i:s'),
+                            
+                        ]);
+                        $ceintadmin=Simpanansukarela::UpdateOrcreate([
+                            'no_register'=>'admin',
+                            'nomortransaksi'=>$mst->no_order,
+                        ],[
+                            
+                            'nominal'=>ceil(($mst->profit*bagi_koperasi())/100),
+                            'kategori_status'=>2,
+                            'sts'=>1,
+                            'bulan'=>date('m'),
+                            'tahun'=>date('Y'),
+                            'created_at'=>date('Y-m-d H:i:s'),
+                            
+                        ]);
+                    }else{
+                        echo'<div style="padding:1%;background:##f3f3f3">Error !<br> Saldo tidak mencukupi</div>';
+                    }
+                }else{
+
+                }
+                
+                foreach($getbarang as $x=>$o){
+                    $ostok=Stok::where('no_transaksi',$mst->no_order)->where('id',$o->id)
+                    ->update(['no_register'=>$mst->no_register,'status'=>2,'urut'=>($x+1)]);
+                }
+                echo'@ok@';
+            }else{
+                $save=Kasir::where('id',$request->id)->update([
+                    'status'=>2,
+                    'akses_bayar_id'=>$request->akses_bayar_id,
+                    'status_bayar_id'=>$status_bayar,
+                    'username'=>Auth::user()->username,
+                    'group'=>Auth::user()->group,
+                   
+                ]);
+                echo'@ok@';
+            }
+            
+        }
           
+    }
+
+    public function cetak(Request $request)
+    {
+        error_reporting(0);
+        $order=Kasir::where('no_order',$request->id)->first();
+        $count=jumlah_item_order_kasir($request->id);
+        $ford=ceil(jumlah_item_order_kasir($request->id)/18);
+        // $ford=3;
+        $pdf = PDF::loadView('kasir.cetak', compact('data','order','ford','count'));
+        // $custom=array(0,0,500,400);
+        $pdf->setPaper('A4','portrait');
+        $pdf->stream($request->id.'.pdf');
+        return $pdf->stream();
+    }
+    public function print(Request $request)
+    {
+        error_reporting(0);
+        $order=Kasir::where('nomor_transaksi',$request->id)->first();
+        $count=jumlah_item_order_kasir($request->id);
+        $ford=ceil(jumlah_item_order_kasir($request->id)/18);
+        // $ford=3;
+        return view('kasir.print', compact('data','order','ford','count'));
+        
     }
 
     

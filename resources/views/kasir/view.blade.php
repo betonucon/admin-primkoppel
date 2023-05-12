@@ -2,7 +2,8 @@
 
 @push('ajax')
 <style>
-	th{text-transform:uppercase;}
+	table.dataTable th{text-transform:uppercase;text-align:left !important}
+	td{background:#fdf2f2}
 </style>
 <script>
         var handleDataTableDefault = function() {
@@ -33,6 +34,8 @@
 						{ data: 'kode_barang' },
 						{ data: 'nama_barang' },
 						{ data: 'satuan' , className: "text-center" },
+						{ data: 'diskon' , className: "text-center" },
+						
 						{ data: 'uang_qty' , className: "text-center" },
 						{ data: 'uang_harga_jual', className: "text-right" },
 						{ data: 'uang_profit', className: "text-right" },
@@ -70,6 +73,8 @@
 		}();
 
 		$(document).ready(function() {
+			$('#qtyty').val(0);
+			$("#diskon").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
 			$("#qtyty").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
 			$("#harga_modal").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
 			$("#harga_jual").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
@@ -157,15 +162,10 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-lg-2 col-form-label text-right">Qty & Jual & Modal</label>
-										<div class="col-lg-1">
-											<div class="input-group input-group-sm">
-												<input type="text" class="form-control" onkeypress="proses_enter(event)" name="qty" id="qtyty"  placeholder="Ketik disini....">
-											</div>
-										</div>
+										<label class="col-lg-2 col-form-label text-right">Harga Jual & Modal</label>
 										<div class="col-lg-2">
 											<div class="input-group input-group-sm">
-												<input type="text" class="form-control"  name="harga_jual" id="harga_jual" onkeypress="proses_enter(event)" value="{{$data->nama_barang}}" placeholder="Ketik disini....">
+												<input type="text" class="form-control" readonly name="harga_jual" id="harga_jual" onkeypress="proses_enter(event)" value="{{$data->nama_barang}}" placeholder="Ketik disini....">
 											</div>
 										</div>
 										<div class="col-lg-2">
@@ -174,34 +174,57 @@
 											</div>
 										</div>
 									</div>
+									<div class="form-group row">
+										<label class="col-lg-2 col-form-label text-right">Qty & Discon (%)</label>
+										<div class="col-lg-1">
+											<div class="input-group input-group-sm">
+												<input type="text" class="form-control" onkeypress="proses_enter(event)" name="qty" id="qtyty"  placeholder="Ketik disini....">
+											</div>
+										</div>
+										<div class="col-lg-2">
+											<div class="input-group input-group-sm">
+												<input type="text" class="form-control"  name="diskon" id="diskon" onkeypress="proses_enter(event)" value="{{$data->nama_barang}}" placeholder="Ketik disini....">
+											</div>
+										</div>
+										
+									</div>
 								</form>
 						</div>
 						
-						<div class="panel-body">
-							<div class="row" style="margin: 0px; margin-bottom: 1%; padding-top: 0.5%; border-top: double #c9c9d9;">
+						<div class="panel-body" style="background: #d4d4e3;">
+							<div class="row" style="margin: 0px; margin-bottom: 1%; padding-top: 0.5%;">
 								<div class="col-md-5">
-									<span class="btn btn-primary btn-sm text-white" onclick="proses_bayar({{$data->id}})">Selesai</span>
-									<span class="btn btn-success btn-sm text-white" >Cetak</span>
+									
+									@if($data->status==1)
+										<span class="btn btn-primary btn-sm text-white" onclick="proses_bayar({{$data->id}})">Selesai</span>
+										<span class="btn  btn-sm text-white" >Cetak</span>
+									@endif
+									@if($data->status==2)
+										<span class="btn btn-default btn-sm text-white" >Selesai</span>
+										<span class="btn btn-info btn-sm text-white" >Cetak</span>
+									@endif
+									
 								</div>
 								<div class="col-md-4">
 									<input type="text" id="cari_datatable" placeholder="Search....." class="form-control input-sm">
 								</div>
-								<div class="col-md-3">
-									<div id="total_harga_kasir" style="background: #f3f096; font-size: 22px; padding: 1%;"></div>
+								<div class="col-md-3" style="padding: 0px 0px;">
+									<div id="total_harga_kasir" style="background: #f3f096; font-size: 22px; padding: 1%;text-align:right"></div>
 								</div>
 							</div>
-							<table id="data-table-default"  class="table table-striped table-bordered table-td-valign-middle">
+							<table id="data-table-default"  class="table table-bordered table-td-valign-middle">
 								<thead>
 									<tr>
 										<th width="5%">No</th>
 										<th width="5%"></th>
-										<th width="10%">KODE</th>
+										<th width="6%">KODE</th>
 										<th class="text-nowrap">NAMA BARANG</th>
-										<th width="10%" class="text-nowrap">SATUAN</th>
-										<th width="10%" class="text-nowrap">QTY</th>
-										<th width="15%" class="text-nowrap">HARGA </th>
-										<th width="15%" class="text-nowrap">PROFIT </th>
-										<th width="15%" class="text-nowrap">TOTAL</th>
+										<th width="6%" class="text-nowrap">SATUAN</th>
+										<th width="6%" class="text-nowrap">DISC %</th>
+										<th width="6%" class="text-nowrap">QTY</th>
+										<th width="9%" class="text-nowrap">HARGA </th>
+										<th width="9%" class="text-nowrap">PROFIT </th>
+										<th width="10%" class="text-nowrap">TOTAL</th>
 										
 									</tr>
 									
@@ -318,6 +341,7 @@
 						$('#harga_modal').val(bat[3]);
 						$('#harga_jual').val(bat[4]);
 						$('#stok').val(bat[5]);
+						$('#qtyty').val(0);
 						$('#qtyty').focus();
 						
 					}
@@ -386,7 +410,7 @@
 							$('#harga_modal').val("");
 							$('#harga_jual').val("");
 							$('#stok').val("");
-							$('#qty').val(0);
+							$('#qtyty').val(0);
 							$('#kode_qr').focus();
 							@if($method==2)
 								$("#default-select2").select2('open');
@@ -442,7 +466,7 @@
 					success: function(msg){
 						var bat=msg.split('@');
 						if(bat[1]=='ok'){
-							location.assign("{{url('orderstok')}}")
+							location.assign("{{url('kasir')}}")
 						}else{
 							document.getElementById("loadnya").style.width = "0px";
 							

@@ -6,21 +6,21 @@
 					</a>
 				</li>
 				@if(Auth::user()['role_id']==1)
-					<li class="has-sub">
+					<li class="has-sub ">
 						<a href="{{url('user')}}">
 							<i class="fa fa-users"></i>
 							<span>User Akses</span>
 						</a>
 					</li>
-					<li class="has-sub">
+					<li class="has-sub" >
 						<a href="javascript:;">
 							<b class="caret"></b>
 							<i class="fa fa-users"></i>
 							<span>Anggota</span> 
 						</a>
-						<ul class="sub-menu">
-							<li><a href="{{url('anggota')}}">Anggota </a></li>
-							<li><a href="{{url('anggota')}}">Stok Barang</a></li>
+						<ul class="sub-menu" style="display:@if(Request::is('anggota')==1 || Request::is('anggota/*')==1) block @endif">
+							<li><a href="{{url('anggota')}}">Daftar </a></li>
+							<!-- <li><a href="{{url('anggota')}}">Keluar</a></li> -->
 							
 						</ul>
 					</li>
@@ -30,7 +30,7 @@
 							<i class="fa fa-cog"></i>
 							<span>Master</span> 
 						</a>
-						<ul class="sub-menu">
+						<ul class="sub-menu" style="display:@if(Request::is('master')==1 || Request::is('master/*')==1) block @endif">
 							<li><a href="{{url('master/satuan')}}">Satuan </a></li>
 							<li><a href="{{url('master/satuan_besar')}}">Satuan Besar</a></li>
 							
@@ -42,7 +42,7 @@
 							<i class="fa fa-briefcase"></i>
 							<span>Barang</span> 
 						</a>
-						<ul class="sub-menu">
+						<ul class="sub-menu" style="display:@if((Request::is('barang')==1 || Request::is('barang/*')==1) || (Request::is('orderstok')==1 || Request::is('orderstok/*')==1)) block @endif">
 							<li><a href="{{url('barang')}}">Daftar Barang </a></li>
 							<li><a href="{{url('orderstok')}}">Order Stok</a></li>
 							

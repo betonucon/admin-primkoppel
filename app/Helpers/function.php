@@ -97,6 +97,15 @@ function get_status(){
    $data=App\Status::orderBy('id','Asc')->get();
    return $data;
 }
+function get_akses_bayar($id){
+   if($id==2){
+      $data=App\Aksesbayar::whereIn('id',array(1,3,4,5))->orderBy('id','Asc')->get();
+   }else{
+      $data=App\Aksesbayar::whereIn('id',array(3,4,5))->orderBy('id','Asc')->get();
+   }
+   
+   return $data;
+}
 function total_anggota(){
    $data=App\Anggota::where('cost',Auth::user()['cost'])->where('status',1)->count();
    return $data;
@@ -249,12 +258,66 @@ function ubah_uang($uang){
    $data=preg_replace($patr,'',$ug[0]);
    return $data;
 }
+function tanggal_eng($date=null){
+   if($date=="" || $date==null){
+      return null;
+   }else{
+      return date('d M Y H:i:s',strtotime($date));
+   }
+   
+}
+function cetak_item_kasir($no_transaksi,$x){
+   if($x==1){
+       $data=App\VStok::where('no_transaksi',$no_transaksi)->whereBetween('urut',[1,18])->orderBy('urut','Asc')->get();
+   }
+   if($x==2){
+       $data=App\VStok::where('no_transaksi',$no_transaksi)->whereBetween('urut',[19,36])->orderBy('urut','Asc')->get();
+   }
+   if($x==3){
+       $data=App\VStok::where('no_transaksi',$no_transaksi)->whereBetween('urut',[37,54])->orderBy('urut','Asc')->get();
+   }
+   if($x==4){
+       $data=App\VStok::where('no_transaksi',$no_transaksi)->whereBetween('urut',[55,72])->orderBy('urut','Asc')->get();
+   }
+   if($x==5){
+       $data=App\VStok::where('no_transaksi',$no_transaksi)->whereBetween('urut',[73,90])->orderBy('urut','Asc')->get();
+   }
+   if($x==6){
+       $data=App\VStok::where('no_transaksi',$no_transaksi)->whereBetween('urut',[91,108])->orderBy('urut','Asc')->get();
+   }
+   if($x==7){
+       $data=App\VStok::where('no_transaksi',$no_transaksi)->whereBetween('urut',[109,126])->orderBy('urut','Asc')->get();
+   }
+   if($x==8){
+       $data=App\VStok::where('no_transaksi',$no_transaksi)->whereBetween('urut',[127,144])->orderBy('urut','Asc')->get();
+   }
+   if($x==9){
+       $data=App\VStok::where('nomor_transaksi',$nomor_transaksi)->whereBetween('urut',[145,162])->orderBy('urut','Asc')->get();
+   }
+   if($x==10){
+       $data=App\VStok::where('nomor_transaksi',$nomor_transaksi)->whereBetween('urut',[163,180])->orderBy('urut','Asc')->get();
+   }
+   
+   return $data;
+}
+function setting_font_print(){
+   $data=App\Setting::where('id',3)->first();
+   return $data->setting_int;
+}
+function jumlah_item_order_kasir($no_transaksi){
+   $data=App\VStok::where('no_transaksi',$no_transaksi)->count();
+   return $data;
+}
+function sum_item_order_kasir($no_transaksi){
+   $data=App\VStok::where('no_transaksi',$no_transaksi)->sum('total_jual');
+   return $data;
+}
 function get_slid(){
    $data=App\Slipgaji::select('tahun')->groupBy('tahun')->orderBy('tahun','Desc')->get();
    return $data;
 }
 function get_satuan(){
-   $data=App\Satuan::orderBy('satuan','Desc')->get();
+   $data=App\Satuan::where('active',1)->orderBy('satuan','Desc')->get();
    return $data;
 }
 function get_group(){

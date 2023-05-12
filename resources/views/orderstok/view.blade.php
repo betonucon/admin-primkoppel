@@ -69,6 +69,7 @@
 		}();
 
 		$(document).ready(function() {
+			$("#qty").val(0);
 			$("#qty").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
 			$("#harga_modal").inputmask({ alias : "currency", prefix: '', 'autoGroup': true, 'digits': 0, 'digitsOptional': false });
 			TableManageDefault.init();

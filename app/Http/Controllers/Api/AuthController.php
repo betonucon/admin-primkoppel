@@ -130,7 +130,7 @@ class AuthController extends BaseController
                     return $this->sendResponse($success, 'User login successfully.');
                 }else{
                    
-                        $error='Akun anda telah dibekukan';
+                        $error='Akun anda telah dihapus';
                         return $this->sendResponseerror($error);
                     
                 }
