@@ -70,6 +70,12 @@ Route::group(['prefix' => 'master','middleware'    => 'auth'],function(){
     Route::get('/satuan/get_data',[MasterController::class, 'get_data_satuan']);
     Route::post('/satuan',[MasterController::class, 'save_data_satuan']);
     Route::get('/satuan/delete',[MasterController::class, 'hapus_data_satuan']);
+    Route::get('/kategori',[MasterController::class, 'index_kategori']);
+    Route::get('/kategori/get_data',[MasterController::class, 'get_data_kategori']);
+    Route::get('/kategori/tambah',[MasterController::class, 'tambah_kategori']);
+    Route::get('/kategori/get_data',[MasterController::class, 'get_data_kategori']);
+    Route::post('/kategori',[MasterController::class, 'save_data_kategori']);
+    Route::get('/kategori/delete',[MasterController::class, 'hapus_data_kategori']);
 });
 
 Route::group(['prefix' => 'orderstok','middleware'    => 'auth'],function(){

@@ -325,7 +325,7 @@ function get_group(){
    return $data;
 }
 function get_kategori_barang(){
-   $data=App\Kategoribarang::orderBy('id','Desc')->get();
+   $data=App\Kategoribarang::where('active',1)->orderBy('id','Desc')->get();
    return $data;
 }
 function get_perusahaan(){

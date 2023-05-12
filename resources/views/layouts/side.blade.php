@@ -32,7 +32,7 @@
 						</a>
 						<ul class="sub-menu" style="display:@if(Request::is('master')==1 || Request::is('master/*')==1) block @endif">
 							<li><a href="{{url('master/satuan')}}">Satuan </a></li>
-							<li><a href="{{url('master/satuan_besar')}}">Satuan Besar</a></li>
+							<li><a href="{{url('master/kategori')}}">Kategori Barang</a></li>
 							
 						</ul>
 					</li>
@@ -73,6 +73,41 @@
 							
 						</ul>
 					</li>
+
+				@endif
+				@if(Auth::user()['role_id']==3)
+					
+					<li class="has-sub">
+						<a href="javascript:;">
+							<b class="caret"></b>
+							<i class="fa fa-cog"></i>
+							<span>Master</span> 
+						</a>
+						<ul class="sub-menu" style="display:@if(Request::is('master')==1 || Request::is('master/*')==1) block @endif">
+							<li><a href="{{url('master/satuan')}}">Satuan </a></li>
+							<li><a href="{{url('master/kategori')}}">Kategori Barang</a></li>
+							
+						</ul>
+					</li>
+					<li class="has-sub">
+						<a href="javascript:;">
+							<b class="caret"></b>
+							<i class="fa fa-briefcase"></i>
+							<span>Barang</span> 
+						</a>
+						<ul class="sub-menu" style="display:@if((Request::is('barang')==1 || Request::is('barang/*')==1) || (Request::is('orderstok')==1 || Request::is('orderstok/*')==1)) block @endif">
+							<li><a href="{{url('barang')}}">Daftar Barang </a></li>
+							<li><a href="{{url('orderstok')}}">Order Stok</a></li>
+							
+						</ul>
+					</li>
+					<li class="has-sub">
+						<a href="{{url('kasir')}}">
+							<i class="fa fa-money-bill-alt"></i>
+							<span>Kasir</span>
+						</a>
+					</li>
+					
 
 				@endif
 				@if(Auth::user()['role_id']==2)
@@ -133,16 +168,7 @@
 						</ul>
 					</li>
 				@endif
-				@if(Auth::user()['role_id']==3)
-					<li class="has-sub">
-						<a href="{{url('Pinjaman')}}">
-							<i class="fa fa-list"></i>
-							<span>Verifikasi Kontrak</span>
-						</a>
-					</li>
-
-				@endif
-                
+				
                 
 				
 			</ul>

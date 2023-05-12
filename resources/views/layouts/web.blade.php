@@ -48,8 +48,39 @@
 			border-top: 1px solid #e4e7ea;
 		}
 		.panel.panel-inverse>.panel-heading {
-			background: #7e878f;
+			background: #0e4d85;
 			color: #fff;
+		}
+		.sidebar.sidebar-grid .nav>li>a {
+			border-top: 1px solid #5c99d1 !important;
+			border-bottom: 1px solid #718699 !important;
+			font-weight: bold;
+		}
+		.sidebar .sub-menu>li>a:after {
+			content: '';
+			position: absolute;
+			left: -11px;
+			top: 11px;
+			width: 11px;
+			height: 2px;
+			background: #f8fcff;
+		}
+		.sidebar .sub-menu>li:before {
+			content: '';
+			position: absolute;
+			left: -13px;
+			top: 0;
+			bottom: 0;
+			width: 2px;
+			background: #dcdedf;
+		}
+		.sidebar .sub-menu {
+			list-style-type: none;
+			padding: 5px 0 10px 39px;
+			margin: 0;
+			background: #0e0e78 !important;
+			position: relative;
+			display: none;
 		}
 		.viewqr{
 			width:100%;
@@ -75,6 +106,16 @@
 		.form-horizontal.form-bordered .form-group>div {
 			padding: 6px;
 		}
+		.sidebar .nav>li.nav-profile .cover {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: url({{url_plug()}}/img/bgbg2.jpg?v={{date('ymdhis')}}) !important;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
         .swal-text {
             width: 100%;
             color: #000;
@@ -87,6 +128,20 @@
 			background:#ededef;
 			padding: 7px 3px !important;
 			color:#000;
+		}
+		.sidebar {
+			background: url({{url_plug()}}/img/bgbg.jpg?v={{date('ymdhis')}});
+			background-size: cover;
+		}
+		.sidebar .nav>li>a {
+			padding: 7px 20px;
+			line-height: 20px;
+			color: #fff !important;
+			display: block;
+			text-decoration: none;
+		}
+		.sidebar .nav .sub-menu>li>a {
+			color: #fff !important;
 		}
 		.loadnya {
 			height: 100%;
@@ -196,7 +251,7 @@
 		<div id="header" class="header navbar-default">
 			<!-- begin navbar-header -->
 			<div class="navbar-header">
-				<a href="{{url('public//')}}" class="navbar-brand"><span class="navbar-logo"><b>PRIMKOPPEL STORE</b></a>
+				<a href="{{url('public//')}}" class="navbar-brand"><img src="{{url_plug()}}/img/prim.png?v={{date('ymdhis')}}" width="100%"></a>
 				<button type="button" class="navbar-toggle" data-click="top-menu-toggled">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -289,20 +344,20 @@
 		<!-- end #header -->
 		
 		<!-- begin #sidebar -->
-		<div id="sidebar" class="sidebar">
+		<div id="sidebar" class="sidebar sidebar-grid">
 			<!-- begin sidebar scrollbar -->
 			<div data-scrollbar="true" data-height="100%">
 				<!-- begin sidebar user -->
 				<ul class="nav">
 					<li class="nav-profile">
 						<a href="javascript:;">
-							<div class="cover with-shadow"></div>
+							<div class="cover"></div>
 							<div class="image">
 								<img src="{{url('public/img/user.png')}}" alt="" /> 
 							</div>
-							<div class="info" style="font-size:11px">
+							<div class="info" style="font-size:12px;color: #000;">
 								{{Auth::user()->name}}
-								<small>{{Auth::user()->role['name']}}</small>
+								<small style="font-size:12px;color: blue;">Administrator</small>
 							</div>
 						</a>
 					</li>

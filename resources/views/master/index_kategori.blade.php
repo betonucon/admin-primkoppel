@@ -14,7 +14,7 @@
 					processing: false,
 					ordering: false,
 					serverSide: false,
-					ajax:"{{ url('master/satuan/get_data')}}",
+					ajax:"{{ url('master/kategori/get_data')}}",
 					columns: [
 						{ data: 'id', render: function (data, type, row, meta) 
                             {
@@ -22,9 +22,7 @@
                             } 
                         },
 						{ data: 'action', className: "text-center" },
-						{ data: 'satuan' },
-						{ data: 'nama_satuan_pecah' , className: "text-center" },
-						{ data: 'total_barang' , className: "text-center" },
+						{ data: 'kategori_barang' },
 						
 						
 					],
@@ -77,7 +75,7 @@
 					<div class="panel panel-inverse" data-sortable-id="form-plugins-1">
 						<!-- begin panel-heading -->
 						<div class="panel-heading">
-							<h4 class="panel-title">MASTER SATUAN</h4>
+							<h4 class="panel-title">MASTER KATEGORI BARANG</h4>
 							<div class="panel-heading-btn">
 								<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
 							</div>
@@ -98,9 +96,7 @@
 											<tr>
 												<th width="5%">No</th>
 												<th width="5%"></th>
-												<th class="text-nowrap">SATUAN</th>
-												<th width="10%" class="text-nowrap">PECAH</th>
-												<th width="10%" class="text-nowrap">BARANG</th>
+												<th class="text-nowrap">KATEGORI BARANG</th>
 											</tr>
 											
 										</thead>
@@ -124,7 +120,7 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
-								<form  class="form-horizontal " id="mydata" action="{{ url('master/satuan/') }}" method="post" enctype="multipart/form-data">
+								<form  class="form-horizontal " id="mydata" action="{{ url('master/kategori/') }}" method="post" enctype="multipart/form-data">
                                     
 									@csrf
 									<!-- <input type="submit"> -->
@@ -170,7 +166,7 @@
 		
 		function tambah(id){
 			$('#modal-tambah').modal('show');
-			$('#tampil_tambah').load("{{url('master/satuan/tambah')}}?id="+id);
+			$('#tampil_tambah').load("{{url('master/kategori/tambah')}}?id="+id);
 			
 		}
 		function show_foto(file){
@@ -199,14 +195,14 @@
                if (willDelete) {
                        $.ajax({
                            type: 'GET',
-                           url: "{{url('master/satuan/delete')}}",
+                           url: "{{url('master/kategori/delete')}}",
                            data: "id="+id,
                            success: function(msg){
                                swal("Success! berhasil terhapus!", {
                                    icon: "success",
                                });
                                var tables=$('#data-table-default').DataTable();
-                                tables.ajax.url("{{ url('master/satuan/get_data')}}").load();
+                                tables.ajax.url("{{ url('master/kategori/get_data')}}").load();
                            }
                        });
                    
@@ -222,7 +218,7 @@
 				var form=document.getElementById('mydata');
 				$.ajax({
 					type: 'POST',
-					url: "{{ url('master/satuan/') }}",
+					url: "{{ url('master/kategori/') }}",
 					data: new FormData(form),
 					contentType: false,
 					cache: false,
@@ -237,7 +233,7 @@
 							$('#modal-tambah').modal('hide');
 							$('#tampil_tambah').html("");
 							var tables=$('#data-table-default').DataTable();
-                                tables.ajax.url("{{ url('master/satuan/get_data')}}").load();
+                                tables.ajax.url("{{ url('master/kategori/get_data')}}").load();
 						}else{
 							document.getElementById("loadnya").style.width = "0px";
 							
