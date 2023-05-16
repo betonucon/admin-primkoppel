@@ -343,7 +343,7 @@ function uang_dashboard($tahun,$bulan,$tgl,$kategori){
       if($tgl!=0){
          $query->where('tgl',$tgl);
       }
-      $data=$query->where('tahun',$tahun)->sum($kategori);
+      $data=$query->where('tahun',$tahun)->sum('profit');
    
    
    return $data;
