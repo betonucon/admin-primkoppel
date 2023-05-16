@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>CETAK NOTA</title>
+        <title>CETAK</title>
         <style>
             html{
                 color:#000;
@@ -14,50 +14,59 @@
             .tth{
                 text-align:center;
                 font-size:20px;
+                background:#fff;
             }
             .tthl{
                 text-align:left;
                 font-size:{{setting_font_print()}}px;
+                background:#fff;
             }
             .tthlg{
                 text-align:left;
                 font-weight:bold;
                 font-size:{{setting_font_print()}}px;
+                background:#fff;
             }
             .tthlb{
                 text-align:left;
                 font-size:{{setting_font_print()}}px;
+                background:#fff;
             }
             .ttd{
                 border:solid 1px #000;
                 padding:0px 4px 0px 4px;
                 font-size:{{setting_font_print()}}px;
-               
+                background:#fff;
             }
             .ttdr{
                 border:solid 1px #000;
                 padding:0px 4px 0px 4px;
                 font-size:{{setting_font_print()}}px;
                 text-align:right;
+                background:#fff;
             }
             .ttdro{
                 border-right:solid 1px #000;
                 padding:0px 4px 0px 4px;
                 font-size:{{setting_font_print()}}px;
                 text-align:right;
+                background:#fff;
             }
             .ttdc{
                 border:solid 1px #000;
                 padding:0px 4px 0px 4px;
                 font-size:{{setting_font_print()}}px;
                 text-align:center;
+                background:#fff;
             }
             .ttdh{
                 text-align:center;
                 text-transform:uppercase;
+                background:#fff;
                 border:solid 1px #000;
                 padding:4px 4px 4px 4px;
                 font-size:{{setting_font_print()}}px;
+                background:#fff;
                
             }
             .boody{
@@ -94,7 +103,7 @@
                 </tr>
                 <!-- <tr>
                     <td class="tthlg" width="8%">NOMOR</td>
-                    <td class="tthlb"  width="14%">: {{$order->nomor_transaksi}}</td>
+                    <td class="tthlb"  width="14%">: {{$order->no_order}}</td>
                     <td class="tthlg">KONSUMEN</td>
                     <td class="tthlb">: {{$order->konsumen}}</td>
                     <td class="tthlg">TANGGAL</td>
@@ -111,7 +120,7 @@
                     <td class="ttdh"  width="8%">Qty</td>
                     <td class="ttdh"  width="8%">Satuan</td>
                     <td class="ttdh"  width="14%">Harga</td>
-                    <td class="ttdh"  width="14%">Discon</td>
+                    <td class="ttdh"  width="13%">Discon</td>
                     <td class="ttdh"  width="14%">Total</td>
                 </tr>
                 <?php

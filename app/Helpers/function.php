@@ -308,8 +308,107 @@ function jumlah_item_order_kasir($no_transaksi){
    $data=App\VStok::where('no_transaksi',$no_transaksi)->count();
    return $data;
 }
+function store_keuangan($no_transaksi,$status,$nominal,$tagihan,$kategori,$profit,$persen_profit){
+   if($kategori==2){
+      $mst=App\Vkasir::where('no_order',$no_transaksi)->first();
+      $keterangan='Penjualan kepada '.$mst->konsumen;
+   }elseif($kategori==2){
+      $mst=App\Orderstok::where('no_order',$no_transaksi)->first();
+      $keterangan='Pembelian Stok kepada '.$mst->distributor;
+   }else{
+      $keterangan='Tranaksi SIPA ';
+   }
+   $data=App\Keuangan::UpdateOrcreate([
+      'no_transaksi'=>$no_transaksi,
+   ],[
+      'status'=>$status,
+      'nominal'=>$nominal,
+      'tagihan'=>$tagihan,
+      'kategori'=>$kategori,
+      'keterangan'=>$keterangan,
+      'profit'=>$profit,
+      'username'=>Auth::user()->username,
+      'group'=>Auth::user()->group,
+      'persen_profit'=>$persen_profit,
+      'created_at'=>date('Y-m-d H:i:s'),
+   ]);
+   
+}
+function uang_dashboard($tahun,$bulan,$tgl,$kategori){
+ 
+      $query=App\Zperiodetahun::query();
+      if($bulan!=0){
+         $query->where('bulan',$bulan);
+      }
+      if($tgl!=0){
+         $query->where('tgl',$tgl);
+      }
+      $data=$query->where('tahun',$tahun)->sum($kategori);
+   
+   
+   return $data;
+}
+function uang_dashboard_group($tahun,$bulan,$tgl,$kategori,$group){
+ 
+      $query=App\Zperiodetahungroup::query();
+      if($bulan!=0){
+         $query->where('bulan',$bulan);
+      }
+      if($tgl!=0){
+         $query->where('tgl',$tgl);
+      }
+      $data=$query->where('tahun',$tahun)->where('group',$group)->sum($kategori);
+   
+   
+   return $data;
+}
+function uang_masuk($tahun,$bulan){
+   if($bulan==0){
+      $data=App\Zperiodetahun::where('tahun',$tahun)->sum('masuk');
+   }else{
+      $data=App\Zperiodetahun::where('tahun',$tahun)->where('bulan',$bulan)->sum('masuk');
+   }
+   
+   return $data;
+}
+function uang_keluar($tahun,$bulan){
+   if($bulan==0){
+      $data=App\Zperiodetahun::where('tahun',$tahun)->sum('keluar');
+   }else{
+      $data=App\Zperiodetahun::where('tahun',$tahun)->where('bulan',$bulan)->sum('keluar');
+   }
+   
+   return $data;
+}
+function uang_profit($tahun,$bulan){
+   if($bulan==0){
+      $data=App\Zperiodetahun::where('tahun',$tahun)->sum('profit');
+   }else{
+      $data=App\Zperiodetahun::where('tahun',$tahun)->where('bulan',$bulan)->sum('profit');
+   }
+   
+   return $data;
+}
+function uang_piutang($tahun,$bulan){
+   if($bulan==0){
+      $data=App\Zperiodetahun::where('tahun',$tahun)->sum('piutang');
+   }else{
+      $data=App\Zperiodetahun::where('tahun',$tahun)->where('bulan',$bulan)->sum('piutang');
+   }
+   
+   return $data;
+}
+function uang_tempo($tahun,$bulan){
+   if($bulan==0){
+      $data=App\Zperiodetahun::where('tahun',$tahun)->sum('tempo');
+   }else{
+      $data=App\Zperiodetahun::where('tahun',$tahun)->where('bulan',$bulan)->sum('tempo');
+   }
+   
+   return $data;
+}
 function sum_item_order_kasir($no_transaksi){
-   $data=App\VStok::where('no_transaksi',$no_transaksi)->sum('total_jual');
+   $data=App\VStok::where('no_transaksi',$no_transaksi)->sum('total');
    return $data;
 }
 function get_slid(){
@@ -322,6 +421,10 @@ function get_satuan(){
 }
 function get_group(){
    $data=App\Group::orderBy('id','Asc')->get();
+   return $data;
+}
+function get_kategorikeuangan(){
+   $data=App\Kategorikeuangan::orderBy('id','Asc')->get();
    return $data;
 }
 function get_kategori_barang(){

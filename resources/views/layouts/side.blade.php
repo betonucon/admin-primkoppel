@@ -55,6 +55,12 @@
 						</a>
 					</li>
 					<li class="has-sub">
+						<a href="{{url('keuangan')}}">
+							<i class="fa fa-money-bill-alt"></i>
+							<span>Keuangan</span>
+						</a>
+					</li>
+					<li class="has-sub">
 						<a href="{{url('simpanan')}}">
 							<i class="fa fa-money-bill-alt"></i>
 							<span>Simpanan Anggota</span>
@@ -105,6 +111,12 @@
 						<a href="{{url('kasir')}}">
 							<i class="fa fa-money-bill-alt"></i>
 							<span>Kasir</span>
+						</a>
+					</li>
+					<li class="has-sub">
+						<a href="{{url('keuangan')}}">
+							<i class="fa fa-money-bill-alt"></i>
+							<span>Keuangan</span>
 						</a>
 					</li>
 					

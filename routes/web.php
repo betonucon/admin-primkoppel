@@ -13,6 +13,7 @@ use App\Http\Controllers\MasterController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\TransaksipinjamanController;
 use App\Http\Controllers\KasirController;
+use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\OrderstokController;
@@ -63,6 +64,18 @@ Route::group(['prefix' => 'barang','middleware'    => 'auth'],function(){
     Route::post('/',[BarangController::class, 'save_data']);
     Route::get('/delete',[BarangController::class, 'hapus_data']);
 });
+Route::group(['prefix' => 'keuangan','middleware'    => 'auth'],function(){
+    Route::get('/',[KeuanganController::class, 'index']);
+    Route::get('/tambah',[KeuanganController::class, 'tambah']);
+    Route::get('/cari_qr',[KeuanganController::class, 'cari_qr']);
+    Route::get('/cari_barang',[KeuanganController::class, 'cari_barang']);
+    Route::get('/get_data',[KeuanganController::class, 'get_data']);
+    Route::get('/get_data_barang',[KeuanganController::class, 'get_data_barang']);
+    Route::get('/view_file',[KeuanganController::class, 'view_file']);
+    Route::get('/cari_anggota',[KeuanganController::class, 'cari_anggota']);
+    Route::post('/',[KeuanganController::class, 'save_data']);
+    Route::get('/delete',[KeuanganController::class, 'hapus_data']);
+});
 Route::group(['prefix' => 'master','middleware'    => 'auth'],function(){
     Route::get('/satuan',[MasterController::class, 'index_satuan']);
     Route::get('/satuan/get_data',[MasterController::class, 'get_data_satuan']);
@@ -105,6 +118,7 @@ Route::group(['prefix' => 'kasir','middleware'    => 'auth'],function(){
     Route::get('/cari_qr',[KasirController::class, 'cari_qr']);
     Route::get('/get_data',[KasirController::class, 'get_data']);
     Route::get('/cetak',[KasirController::class, 'cetak']);
+    Route::get('/print',[KasirController::class, 'print']);
     Route::get('/get_data_stok',[KasirController::class, 'get_data_stok']);
     Route::get('/view_file',[KasirController::class, 'view_file']);
     Route::get('/cari_anggota',[KasirController::class, 'cari_anggota']);

@@ -58,7 +58,7 @@ class KasirController extends Controller
         }else{
             $method=$request->method;
         }
-        $data=Kasir::where('no_order',$request->nomor)->first();
+        $data=VKasir::where('no_order',$request->nomor)->first();
         return view('kasir.view',compact('data','nomor','read','method'));
     }
     public function total_harga_kasir(request $request){
@@ -295,7 +295,14 @@ class KasirController extends Controller
         
         $rules['akses_bayar_id']= 'required';
         $messages['akses_bayar_id.required']= 'Pilih Metode Bayar';
+        if($request->akses_bayar_id==1){
+            if(saldo_sukarela($mst->no_register)>=$mst->total_harga){
 
+            }else{
+                $rules['cert']= 'required';
+                $messages['cert.required']= 'Saldo tidak mencukupi';
+            }
+        }
         $validator = Validator::make($request->all(), $rules, $messages);
         $val=$validator->Errors();
 
@@ -309,19 +316,13 @@ class KasirController extends Controller
             }
             echo'</div>';
         }else{
-        
-            if($request->akses_bayar_id==1){
-                $status_bayar=2;
-            }
-            if($request->akses_bayar_id==2){
-                $status_bayar=1;
-            }
-            if($request->akses_bayar_id==3){
-                $status_bayar=1;
-            }
-            if($mst->kategori==2){
-                if($request->akses_bayar_id==1){
-                    if(saldo_sukarela($mst->no_register)>=$mst->total_harga){
+            if($mst->status==1 || ($mst->status==2 && $mst->status_bayar_id==1)){
+                if(in_array($request->akses_bayar_id,array(1,3,4))){
+                    $status_bayar=2;
+                }else{
+                    $status_bayar=1;
+                }
+                if($mst->kategori==2){
                         $save=Kasir::where('id',$request->id)->update([
                             'status'=>2,
                             'akses_bayar_id'=>$request->akses_bayar_id,
@@ -330,40 +331,85 @@ class KasirController extends Controller
                             'group'=>Auth::user()->group,
                         
                         ]);
-                        $cekoutsaldo=Simpanansukarela::UpdateOrcreate([
-                            'no_register'=>$mst->no_register,
-                            'nomortransaksi'=>$mst->no_order,
-                            'sts'=>2,
+                        if($request->akses_bayar_id==1){
+                        
                             
-                        ],[
+                            $cekoutsaldo=Simpanansukarela::UpdateOrcreate([
+                                'no_register'=>$mst->no_register,
+                                'nomortransaksi'=>$mst->no_order,
+                                'sts'=>2,
+                                
+                            ],[
+                                
+                                'nominal'=>$mst->total_harga,
+                                'kategori_status'=>2,
+                                'bulan'=>date('m'),
+                                'tahun'=>date('Y'),
+                                'created_at'=>date('Y-m-d H:i:s'),
+                                
+                            ]);
                             
-                            'nominal'=>$mst->total_harga,
-                            'kategori_status'=>2,
-                            'bulan'=>date('m'),
-                            'tahun'=>date('Y'),
-                            'created_at'=>date('Y-m-d H:i:s'),
                             
-                        ]);
-                        $ceintsaldo=Simpanansukarela::UpdateOrcreate([
-                            'no_register'=>$mst->no_register,
-                            'nomortransaksi'=>$mst->no_order,
-                            'sts'=>1,
-                            
-                        ],[
-                            
-                            'nominal'=>round(($mst->profit*bagi_anggota())/100),
-                            'kategori_status'=>2,
-                            'bulan'=>date('m'),
-                            'tahun'=>date('Y'),
-                            'created_at'=>date('Y-m-d H:i:s'),
-                            
-                        ]);
+                        }
+                        if(in_array($request->akses_bayar_id,array(1,3,4))){
+                            $ceintsaldo=Simpanansukarela::UpdateOrcreate([
+                                'no_register'=>$mst->no_register,
+                                'nomortransaksi'=>$mst->no_order,
+                                'sts'=>1,
+                                
+                            ],[
+                                
+                                'nominal'=>round(($mst->profit*bagi_anggota())/100),
+                                'kategori_status'=>2,
+                                'bulan'=>date('m'),
+                                'tahun'=>date('Y'),
+                                'created_at'=>date('Y-m-d H:i:s'),
+                                
+                            ]);
+                            $ceintadmin=Simpanansukarela::UpdateOrcreate([
+                                'no_register'=>'admin',
+                                'nomortransaksi'=>$mst->no_order,
+                            ],[
+                                
+                                'nominal'=>ceil(($mst->profit*bagi_koperasi())/100),
+                                'kategori_status'=>2,
+                                'sts'=>1,
+                                'bulan'=>date('m'),
+                                'tahun'=>date('Y'),
+                                'created_at'=>date('Y-m-d H:i:s'),
+                                
+                            ]);
+                            $sendno_transaksi=$mst->no_order;
+                            $sendnominal=$mst->total_harga;
+                            $sendtagihan=0;
+                            $sendprofit=ceil(($mst->profit*bagi_koperasi())/100);
+                            $sendpersenprofit=bagi_koperasi();
+                            store_keuangan($sendno_transaksi,2,$sendnominal,$sendtagihan,2,$sendprofit,$sendpersenprofit);
+                        }else{
+                            $sendno_transaksi=$mst->no_order;
+                            $sendnominal=$mst->total_harga;
+                            $sendtagihan=$mst->total_harga;
+                            $sendprofit=ceil(($mst->profit*bagi_koperasi())/100);
+                            $sendpersenprofit=bagi_koperasi();
+                            store_keuangan($sendno_transaksi,3,$sendnominal,$sendtagihan,2,$sendprofit,$sendpersenprofit);
+                        }
+                    
+                }else{
+                    $save=Kasir::where('id',$request->id)->update([
+                        'status'=>2,
+                        'akses_bayar_id'=>$request->akses_bayar_id,
+                        'status_bayar_id'=>$status_bayar,
+                        'username'=>Auth::user()->username,
+                        'group'=>Auth::user()->group,
+                    
+                    ]);
+                    if(in_array($request->akses_bayar_id,array(1,3,4))){
                         $ceintadmin=Simpanansukarela::UpdateOrcreate([
                             'no_register'=>'admin',
                             'nomortransaksi'=>$mst->no_order,
                         ],[
                             
-                            'nominal'=>ceil(($mst->profit*bagi_koperasi())/100),
+                            'nominal'=>$mst->profit,
                             'kategori_status'=>2,
                             'sts'=>1,
                             'bulan'=>date('m'),
@@ -371,28 +417,29 @@ class KasirController extends Controller
                             'created_at'=>date('Y-m-d H:i:s'),
                             
                         ]);
+                        $sendno_transaksi=$mst->no_order;
+                        $sendnominal=$mst->total_harga;
+                        $sendtagihan=0;
+                        $sendprofit=$mst->profit;
+                        $sendpersenprofit=100;
+                        store_keuangan($sendno_transaksi,2,$sendnominal,$sendtagihan,2,$sendprofit,$sendpersenprofit);
                     }else{
-                        echo'<div style="padding:1%;background:##f3f3f3">Error !<br> Saldo tidak mencukupi</div>';
+                        $sendno_transaksi=$mst->no_order;
+                        $sendnominal=$mst->total_harga;
+                        $sendtagihan=$mst->total_harga;
+                        $sendprofit=$mst->profit;
+                        $sendpersenprofit=100;
+                        store_keuangan($sendno_transaksi,3,$sendnominal,$sendtagihan,2,$sendprofit,$sendpersenprofit);
                     }
-                }else{
-
+                   
                 }
-                
                 foreach($getbarang as $x=>$o){
                     $ostok=Stok::where('no_transaksi',$mst->no_order)->where('id',$o->id)
                     ->update(['no_register'=>$mst->no_register,'status'=>2,'urut'=>($x+1)]);
                 }
                 echo'@ok@';
             }else{
-                $save=Kasir::where('id',$request->id)->update([
-                    'status'=>2,
-                    'akses_bayar_id'=>$request->akses_bayar_id,
-                    'status_bayar_id'=>$status_bayar,
-                    'username'=>Auth::user()->username,
-                    'group'=>Auth::user()->group,
-                   
-                ]);
-                echo'@ok@';
+                echo'@ok@reload';
             }
             
         }
@@ -402,7 +449,7 @@ class KasirController extends Controller
     public function cetak(Request $request)
     {
         error_reporting(0);
-        $order=Kasir::where('no_order',$request->id)->first();
+        $order=VKasir::where('no_order',$request->id)->first();
         $count=jumlah_item_order_kasir($request->id);
         $ford=ceil(jumlah_item_order_kasir($request->id)/18);
         // $ford=3;
@@ -415,7 +462,7 @@ class KasirController extends Controller
     public function print(Request $request)
     {
         error_reporting(0);
-        $order=Kasir::where('nomor_transaksi',$request->id)->first();
+        $order=VKasir::where('no_order',$request->id)->first();
         $count=jumlah_item_order_kasir($request->id);
         $ford=ceil(jumlah_item_order_kasir($request->id)/18);
         // $ford=3;

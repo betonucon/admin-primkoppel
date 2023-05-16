@@ -33,7 +33,7 @@
 						{ data: 'action', className: "text-center" },
 						{ data: 'kode_barang' },
 						{ data: 'nama_barang' },
-						{ data: 'satuan' , className: "text-center" },
+						{ data: 'nama_satuan' , className: "text-center" },
 						{ data: 'diskon' , className: "text-center" },
 						
 						{ data: 'uang_qty' , className: "text-center" },
@@ -95,7 +95,7 @@
 					<div class="panel panel-inverse" data-sortable-id="form-plugins-1">
 						<!-- begin panel-heading -->
 						<div class="panel-heading">
-							<h4 class="panel-title">STOK ORDER {{$data->no_order}}</h4>
+							<h4 class="panel-title">KASIR " By {{$data->name}} Group : {{$data->group}} "</h4>
 							<div class="panel-heading-btn">
 								<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
 							</div>
@@ -201,7 +201,10 @@
 									@endif
 									@if($data->status==2)
 										<span class="btn btn-default btn-sm text-white" >Selesai</span>
-										<span class="btn btn-info btn-sm text-white" >Cetak</span>
+										@if($data->status_bayar_id==1)
+										<span class="btn btn-primary btn-sm text-white" onclick="proses_bayar({{$data->id}})">Pembayaran</span>
+										@endif
+										<span class="btn btn-info btn-sm text-white" onclick="cetak_data()" >Cetak</span>
 									@endif
 									
 								</div>
@@ -262,6 +265,25 @@
                         </div>
                     </div>
                 </div>
+				<div class="modal fade" id="modal-cetak" style="display: none;" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title"></h4>
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							</div>
+							<div class="modal-body" style="height:450px;overflow-y:scroll">
+								
+								<div id="tampil-form-cetak"></div>
+								
+							</div>
+							<div class="modal-footer">
+								<a href="javascript:;" class="btn btn-white" onclick="location.reload()">Tutup</a>
+								<a href="javascript:;" class="btn btn-danger" onclick="printDiv('tampil-form-cetak','Title')"  ><i class="fas fa-print"></i> Cetak</a>
+							</div>
+						</div>
+					</div>
+				</div> 
 				<div class="modal fade" id="modal-file" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -295,6 +317,12 @@
 			$('#tampil_bayar').load("{{url('kasir/bayar')}}?id="+id);
 			
 		}
+
+		function cetak_data(){
+            $('#modal-cetak .modal-title').text('Konfirmasi ');
+            $('#modal-cetak').modal('show');
+            $('#tampil-form-cetak').load("{{url('kasir/print')}}?id={{$data->no_order}}")
+        }
 		$('#default-select2').select2({
             minimumInputLength: 1,
             allowClear: true,
@@ -319,7 +347,23 @@
 		@if($method==2)
         	$("#default-select2").select2('open');
         @endif
+		function printDiv(divId,title) {
+			
+			let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
 
+			mywindow.document.write(`<html><head><title>${title}</title>`);
+			mywindow.document.write('</head><body >');
+			mywindow.document.write(document.getElementById(divId).innerHTML);
+			mywindow.document.write('</body></html>');
+
+			mywindow.document.close(); // necessary for IE >= 10
+			mywindow.focus(); // necessary for IE >= 10*/
+
+			mywindow.print();
+			mywindow.close();
+
+			return true;
+		}
 		function show_qr(text){
 
 			setTimeout(exce(text), 19000);
@@ -350,7 +394,7 @@
 			
 			
 		}
-
+		@if($data->status!=2)
 		function delete_barang(id){
            
            swal({
@@ -385,6 +429,8 @@
            });
            
         }
+		@endif
+		@if($data->status!=2)
 		function proses_enter(e){
 			if(e.keyCode === 13){
 				
@@ -449,7 +495,8 @@
 				});
             }
         }
-
+		@endif
+		@if($data->status==1 || ($data->status==2 && $data->status_bayar_id==1))
 		function simpan_bayar(){
                 
 				var form=document.getElementById('mydatabayar');
@@ -466,7 +513,17 @@
 					success: function(msg){
 						var bat=msg.split('@');
 						if(bat[1]=='ok'){
-							location.assign("{{url('kasir')}}")
+							if(bat[2]=='reload'){
+								location.reload();
+							}else{
+								document.getElementById("loadnya").style.width = "0px";
+								$('#modal-bayar').modal('hide');
+								$('#tampil_bayar').html("");
+								$('#modal-cetak .modal-title').text('Konfirmasi ');
+								$('#modal-cetak').modal({backdrop: 'static', keyboard: false});
+								$('#tampil-form-cetak').load("{{url('kasir/print')}}?id={{$data->no_order}}")
+							}
+							
 						}else{
 							document.getElementById("loadnya").style.width = "0px";
 							
@@ -495,5 +552,6 @@
 				
 				});
 		}
+		@endif
 	</script>
 @endpush
