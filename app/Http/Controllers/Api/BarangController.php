@@ -33,7 +33,7 @@ class BarangController extends BaseController
             $data=$query->orderBy('nama_barang','Asc');
         }
         
-        $data=$query->paginate(20);
+        $data=$query->get();
         $cek=$query->count();
         $col = [];
             
@@ -86,7 +86,7 @@ class BarangController extends BaseController
             $data=$query->orderBy('nama_barang','Asc');
         }
         
-        $data=$query->paginate(20);
+        $data=$query->get();
         $cek=$query->count();
         $col = [];
             
@@ -98,6 +98,108 @@ class BarangController extends BaseController
                     $harga=$o->harga_member;
                     $dis=$o->diskon;
                 }
+                
+                if($dis==0){
+                    $diskon=0;
+                }else{
+                    $diskon=$dis;
+                }
+                $cl['id'] = $o->id;
+                $cl['kode_barang'] = $o->kode_barang;
+                $cl['nama_barang'] = $o->nama_barang;
+                $cl['deskripsi'] = $o->deskripsi;
+                $cl['kategori_barang'] = $o->kategori_barang;
+                $cl['harga_modal'] = (int) round($o->harga_modal);
+                $cl['harga_jual'] = (int) round($harga);
+                $cl['harga_normal'] = (int) round($o->harga_jual);
+                $cl['satuan'] = $o->nama_satuan;
+                $cl['terjual'] = singkat_angka($o->terjual);
+                $cl['diskon'] = (int) $diskon;
+                $cl['stok'] = $o->stok;
+                $cl['foto'] = url_plug().'/_icon/'.$o->file;
+                $col[]=$cl;
+            }
+            $success['total_page'] =  ceil($cek/20);
+            $success['total_item'] =  $cek;
+            $success['current_page'] =  $page;
+            $success['result'] =  $col;
+            
+        
+        
+
+        return $this->sendResponse($success, 'success');
+    }
+    public function barang_promo(Request $request)
+    {
+        error_reporting(0);
+        $auth = Auth::user(); 
+        if($request->page==""){
+            $page=1;
+        }else{
+            $page=$request->page;
+        }
+        $query=VBarang::query();
+        $data=$query->orderBy('diskon','Desc');
+        
+        $data=$query->paginate(5);
+        $cek=$query->count();
+        $col = [];
+            
+            foreach($data as $o){
+                
+                $harga=$o->harga_member;
+                $dis=$o->diskon;
+                
+                if($dis==0){
+                    $diskon=0;
+                }else{
+                    $diskon=$dis;
+                }
+                $cl['id'] = $o->id;
+                $cl['kode_barang'] = $o->kode_barang;
+                $cl['nama_barang'] = $o->nama_barang;
+                $cl['deskripsi'] = $o->deskripsi;
+                $cl['kategori_barang'] = $o->kategori_barang;
+                $cl['harga_modal'] = (int) round($o->harga_modal);
+                $cl['harga_jual'] = (int) round($harga);
+                $cl['harga_normal'] = (int) round($o->harga_jual);
+                $cl['satuan'] = $o->nama_satuan;
+                $cl['terjual'] = singkat_angka($o->terjual);
+                $cl['diskon'] = (int) $diskon;
+                $cl['stok'] = $o->stok;
+                $cl['foto'] = url_plug().'/_icon/'.$o->file;
+                $col[]=$cl;
+            }
+            $success['total_page'] =  ceil($cek/20);
+            $success['total_item'] =  $cek;
+            $success['current_page'] =  $page;
+            $success['result'] =  $col;
+            
+        
+        
+
+        return $this->sendResponse($success, 'success');
+    }
+    public function barang_sering_dicari(Request $request)
+    {
+        error_reporting(0);
+        $auth = Auth::user(); 
+        if($request->page==""){
+            $page=1;
+        }else{
+            $page=$request->page;
+        }
+        $query=VBarang::query();
+        $data=$query->orderBy('terjual','Desc');
+        
+        $data=$query->paginate(5);
+        $cek=$query->count();
+        $col = [];
+            
+            foreach($data as $o){
+                
+                $harga=$o->harga_member;
+                $dis=$o->diskon;
                 
                 if($dis==0){
                     $diskon=0;
