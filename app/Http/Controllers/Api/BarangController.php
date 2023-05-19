@@ -27,6 +27,9 @@ class BarangController extends BaseController
             $page=$request->page;
         }
         $query=VBarang::query();
+        if($request->nama_barang!=''){
+            $data=$query->where('nama_barang','LIKE','%'.$request->nama_barang.'%');
+        }
         if($request->orderby=='1'){
             $data=$query->orderBy('harga_jual','Asc');
         }else{
@@ -80,6 +83,9 @@ class BarangController extends BaseController
             $page=$request->page;
         }
         $query=VBarang::query();
+        if($request->nama_barang!=''){
+            $data=$query->where('nama_barang','LIKE','%'.$request->nama_barang.'%');
+        }
         if($request->orderby=='1'){
             $data=$query->orderBy('harga_jual','Asc');
         }else{
