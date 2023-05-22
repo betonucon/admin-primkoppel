@@ -60,6 +60,8 @@ class PinjamanController extends BaseController
                         return $this->sendResponseerror($errorapp);
                     }else{
                         $nomor='PJ'.date('ymdhis');
+                        $bunga=ceil(($request->nominal*10)/100);
+                        $cicilan=ceil(($request->nominal/$request->waktu)+$bunga);
                         $save=Pinjaman::UpdateOrcreate([
                             'no_register'=>$auth->username,
                             'sts_pinjaman'=>1,
@@ -67,7 +69,10 @@ class PinjamanController extends BaseController
                         ],[
                             'nomortransaksi'=>$nomor,
                             'nominal'=>$request->nominal,
+                            'bunga_bulanan'=>$bunga,
+                            'cicilan'=>$cicilan,
                             'waktu'=>$request->waktu,
+                            'periode_masuk'=>0,
                             'dibayar'=>0,
                             
                             'created_at'=>date('Y-m-d H:i:s'),
