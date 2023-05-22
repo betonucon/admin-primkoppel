@@ -55,3 +55,4 @@ Route::get('barang_non', [BarangController::class, 'barang_non']);
 Route::get('barang_promo', [BarangController::class, 'barang_promo']);
 Route::get('barang_sering_dicari', [BarangController::class, 'barang_sering_dicari']);
 Route::post('register', [AuthController::class, 'register']);
+Route::get('privacy', [AuthController::class, 'privacy']);

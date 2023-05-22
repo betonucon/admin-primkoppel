@@ -165,6 +165,10 @@ class AuthController extends BaseController
         } 
     }
 
+    public function privacy(Request $request)
+    {
+        return view('privacy');
+    }
     public function fcm_token(Request $request)
     {
         $akses = $request->user(); 
