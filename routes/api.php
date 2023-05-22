@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group( function () {
 Route::middleware('auth:sanctum')->group( function () {
     Route::get('saldo', [AuthController::class, 'saldo']);
     Route::get('barang', [BarangController::class, 'barang']);
+    Route::get('detail_barang', [BarangController::class, 'detail_barang']);
     Route::group(['prefix' => 'master'],function(){
         Route::get('nilai', [MasterController::class, 'nilai']);
         Route::get('akses_bayar', [MasterController::class, 'akses_bayar']);

@@ -135,6 +135,49 @@ class BarangController extends BaseController
 
         return $this->sendResponse($success, 'success');
     }
+    public function detail_barang(Request $request)
+    {
+        error_reporting(0);
+        $auth = Auth::user(); 
+        $query=VBarang::query();
+        $o=$query->where('kode_barang',$request->kode_barang)->first();
+        $cek=$query->count();
+        
+            
+                if($auth->sts_anggota==1){
+                    $harga=$o->harga;
+                    $dis=$o->diskon_anggota;
+                }else{
+                    $harga=$o->harga_member;
+                    $dis=$o->diskon;
+                }
+                
+                if($dis==0){
+                    $diskon=0;
+                }else{
+                    $diskon=$dis;
+                }
+                $success['id'] = $o->id;
+                $success['kode_barang'] = $o->kode_barang;
+                $success['nama_barang'] = $o->nama_barang;
+                $success['deskripsi'] = $o->deskripsi;
+                $success['kategori_barang'] = $o->kategori_barang;
+                $success['harga_modal'] = (int) round($o->harga_modal);
+                $success['harga_jual'] = (int) round($harga);
+                $success['harga_normal'] = (int) round($o->harga_jual);
+                $success['satuan'] = $o->nama_satuan;
+                $success['terjual'] = singkat_angka($o->terjual);
+                $success['diskon'] = (int) $diskon;
+                $success['stok'] = $o->stok;
+                $success['foto'] = url_plug().'/_icon/'.$o->file;
+             
+           
+            
+        
+        
+
+        return $this->sendResponse($success, 'success');
+    }
     public function barang_promo(Request $request)
     {
         error_reporting(0);
