@@ -460,11 +460,7 @@
 								buttonsStyling:!1,
 								showCloseButton:!0
 							}).then(function(t) {
-								if(t.isConfirmed==true){
-									adu.pause();
-								}else{
-									
-								}
+								adu.pause();
 							})
 							
 						}
