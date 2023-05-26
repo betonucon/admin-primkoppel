@@ -248,6 +248,10 @@ function url_plug(){
    $data=url('public');
    return $data;
 }
+function url_pluges(){
+   $data=url('/');
+   return $data;
+}
 function nama_user($no_register){
    $data=App\VUser::where('username',$no_register)->firstOrfail();
    return $data->name;
@@ -333,6 +337,14 @@ function store_keuangan($no_transaksi,$status,$nominal,$tagihan,$kategori,$profi
       'created_at'=>date('Y-m-d H:i:s'),
    ]);
    
+}
+function push_pusher($channels, $event, $datas){
+   require __DIR__ . ''.url_pluges().'/vendor/autoload.php';
+
+   $pusher = new Pusher\Pusher('99efd5a3e253906ee0ed', '2b48554c2d1ea5b2150a', '1487531', array('cluster' => 'ap1'));
+   
+   $response = $pusher->trigger($channels, $event, $data);
+   return $response;
 }
 function uang_dashboard($tahun,$bulan,$tgl,$kategori){
  

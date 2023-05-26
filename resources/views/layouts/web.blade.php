@@ -390,7 +390,9 @@
 		<!-- end scroll to top btn -->
 	</div>
 	<!-- end page container -->
-	
+	<audio id="myAudio">
+        <source src="{{url_plug()}}/img/audio.mp3" type="audio/mp3">
+    </audio>
 	<script src="{{url('public/assets/assets/js/app.min.js')}}"></script>
 	<!-- <script src="{{url('public/assets/assets/js/theme/default.min.js')}}"></script> -->
 	<script src="{{url('public/assets/assets/js/theme/transparent.min.js')}}"></script>
@@ -420,21 +422,53 @@
 	<script src="{{url('public/assets/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
 	<script src="{{url('public/assets/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>
 	<script src="{{url('public/assets/assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js')}}"></script>
-	<script src="{{url('public/assets/assets/js/demo/table-manage-responsive.demo.js')}}"></script>
 	<script src="{{url('public/assets/assets/plugins/chart.js/dist/Chart.min.js')}}"></script>
 	<script src="{{url('public/assets/assets/plugins/jstree/dist/jstree.min.js')}}"></script>
-	<script src="{{url('public/assets/assets/js/demo/ui-tree.demo.js')}}"></script>
 	<script src="{{url('public/assets/assets/plugins/sweetalert/dist/sweetalert.min.js')}}"></script>
 	
 	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
 	<script src="{{url('public/assets/assets/plugins/datatables.net-fixedheader/js/dataTables.fixedheader.min.js')}}"></script>
 	<script src="{{url('public/assets/assets/plugins/datatables.net-fixedheader-bs4/js/fixedheader.bootstrap4.min.js')}}"></script>
-	@stack('ajax')
+	
 	<script type='text/javascript' src="{{url_plug()}}/js/jquery.inputmask.bundle.js"></script>
+	<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 	<!-- ================== END PAGE LEVEL JS ================== -->
 	<script>
 		
-		
+		Pusher.logToConsole = true;
+
+		var pusher = new Pusher('8bbce781bf634fd51f8e', {
+			cluster: 'ap1',
+			// forceTLS: true
+		});
+
+		var channel = pusher.subscribe('my-chanel');
+			channel.bind('kirim-created', function(data) {
+				 	var adu = document.getElementById("myAudio");
+					
+					var pesan=data.message;
+					var bat=pesan.split('@');
+						adu.loop = true;
+						adu.play();
+						if(bat[0]=='1'){
+							swal( {
+								title: bat[1],
+								text: "",
+								icon:"warning",
+								confirmButtonText:"Lihat",
+								confirmButtonClass:"btn btn-success w-xs me-2",
+								buttonsStyling:!1,
+								showCloseButton:!0
+							}).then(function(t) {
+								if(t.isConfirmed==true){
+									adu.pause();
+								}else{
+									
+								}
+							})
+							
+						}
+			});
 
 		$('#modal-notifikasi').hide();
 		function tutup(){
@@ -447,6 +481,9 @@
 		    return false;
 		  return true;
 		}
+
+
 	</script>
+@stack('ajax')
 </body>
 </html>

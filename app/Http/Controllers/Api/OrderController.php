@@ -19,6 +19,7 @@ use App\VStok;
 use App\Tujuan;
 use App\VOrderstok;
 use Illuminate\Support\Facades\Auth;
+use App\Events\KirimCreated;  
 use Validator;
    
 class OrderController extends BaseController
@@ -355,7 +356,8 @@ class OrderController extends BaseController
                         ]);
                     }
                     $totalcheck=VStok::where('check',1)->where('no_register',$auth->username)->where('status',0)->update(['no_transaksi'=>$no_transaksi,'status'=>2]);
-                    return $this->sendResponse(true, 'success');
+                    KirimCreated::dispatch('sukses');
+                    return $this->sendResponse(true, '1@ No Order '.$no_transaksi);
                 }
         } catch(\Exception $e){
             return $this->sendResponseerror($e->getMessage());

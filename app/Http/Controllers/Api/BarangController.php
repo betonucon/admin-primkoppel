@@ -9,7 +9,7 @@ use App\Cicilan;
 use App\VBarang;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-   
+use App\Events\KirimCreated;    
 class BarangController extends BaseController
 {
     /**
@@ -17,6 +17,10 @@ class BarangController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
+    public function pusher_test(Request $request)
+    {
+        KirimCreated::dispatch('1@sukses');
+    }
     public function barang_non(Request $request)
     {
         error_reporting(0);

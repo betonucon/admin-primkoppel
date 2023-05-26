@@ -51,6 +51,7 @@ Route::middleware('auth:sanctum')->group( function () {
 });
 
 
+Route::get('pusher_test', [BarangController::class, 'pusher_test']);
 Route::get('barang_non', [BarangController::class, 'barang_non']);
 Route::get('barang_promo', [BarangController::class, 'barang_promo']);
 Route::get('barang_sering_dicari', [BarangController::class, 'barang_sering_dicari']);
