@@ -33,7 +33,7 @@
 	<link href="{{url('public/assets/assets/plugins/jstree/dist/themes/default/style.min.css')}}" rel="stylesheet" />
 	<link href="{{url('public/assets/assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
 	<link href="{{url('public/assets/assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
-	<link href="{{url('public/assets/assets/plugins/datatables.net-fixedheader-bs4/css/fixedheader.bootstrap4.min.css')}}" rel="stylesheet" />
+	<link href="{{url('public/assets/assets/plugins/datatables.net-fixedheader-bs4/css/fixedHeader.bootstrap4.min.css')}}" rel="stylesheet" />
 	<link href="{{url('public/assets/assets/plugins/smartwizard/dist/css/smart_wizard.css')}}" rel="stylesheet" />
 	<link href="{{url('public/assets/assets/plugins/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.min.css')}}" rel="stylesheet" />
 	@stack('style')
@@ -427,8 +427,8 @@
 	<script src="{{url('public/assets/assets/plugins/sweetalert/dist/sweetalert.min.js')}}"></script>
 	
 	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
-	<script src="{{url('public/assets/assets/plugins/datatables.net-fixedheader/js/dataTables.fixedheader.min.js')}}"></script>
-	<script src="{{url('public/assets/assets/plugins/datatables.net-fixedheader-bs4/js/fixedheader.bootstrap4.min.js')}}"></script>
+	<script src="{{url('public/assets/assets/plugins/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
+	<script src="{{url('public/assets/assets/plugins/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.min.js')}}"></script>
 	
 	<script type='text/javascript' src="{{url_plug()}}/js/jquery.inputmask.bundle.js"></script>
 	<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
