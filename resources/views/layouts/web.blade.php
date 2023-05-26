@@ -452,8 +452,8 @@
 						adu.play();
 						if(bat[0]=='1'){
 							swal( {
-								title: bat[1],
-								text: "",
+								title: "Notifikasi Order",
+								text: bat[1],
 								icon:"warning",
 								confirmButtonText:"Lihat",
 								confirmButtonClass:"btn btn-success w-xs me-2",

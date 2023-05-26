@@ -356,7 +356,7 @@ class OrderController extends BaseController
                         ]);
                     }
                     $totalcheck=VStok::where('check',1)->where('no_register',$auth->username)->where('status',0)->update(['no_transaksi'=>$no_transaksi,'status'=>2]);
-                    KirimCreated::dispatch('1@ No Order '.$no_transaksi);
+                    KirimCreated::dispatch('1@ No Order '.$no_transaksi.' by.'.$auth->name);
                     return $this->sendResponse(true, 'success');
                 }
         } catch(\Exception $e){
