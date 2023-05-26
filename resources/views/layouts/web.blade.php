@@ -461,6 +461,10 @@
 								showCloseButton:!0
 							}).then(function(t) {
 								adu.pause();
+								@if(Request::is('kasir')==1)
+									var tables=$('#data-table-default').DataTable();
+										tables.ajax.url("{{ url('kasir/get_data')}}").load();
+								@endif
 							})
 							
 						}
