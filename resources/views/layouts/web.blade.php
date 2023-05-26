@@ -33,7 +33,7 @@
 	<link href="{{url('public/assets/assets/plugins/jstree/dist/themes/default/style.min.css')}}" rel="stylesheet" />
 	<link href="{{url('public/assets/assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
 	<link href="{{url('public/assets/assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
-	<link href="{{url('public/assets/assets/plugins/datatables.net-fixedheader-bs4/css/fixedheader.bootstrap4.min.css')}}" rel="stylesheet" />
+	<!-- <link href="{{url('public/assets/assets/plugins/datatables.net-fixedheader-bs4/css/fixedheader.bootstrap4.min.css')}}" rel="stylesheet" /> -->
 	<link href="{{url('public/assets/assets/plugins/smartwizard/dist/css/smart_wizard.css')}}" rel="stylesheet" />
 	<link href="{{url('public/assets/assets/plugins/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.min.css')}}" rel="stylesheet" />
 	@stack('style')
